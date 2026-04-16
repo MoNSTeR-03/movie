@@ -9,14 +9,8 @@
 * { box-sizing: border-box; }
 
 :root{
-  --pink:#ff8fd8;
-  --pink2:#ffb8ef;
-  --violet:#9b5cff;
   --skin:#f6d2bd;
   --hair:#23111e;
-  --night1:#2a103d;
-  --night2:#16081f;
-  --night3:#000;
 }
 
 html, body{
@@ -38,22 +32,33 @@ body{
   inset:0;
   overflow:hidden;
   background:linear-gradient(to bottom,#ffb6c9 0%,#d87bd6 38%,#43204a 70%,#150813 100%);
-  transition:background 2.5s ease, filter 1.2s ease;
+  transition:background 2.5s ease;
 }
 
 #world.night{
-  background:linear-gradient(to bottom,var(--night1) 0%,var(--night2) 45%,var(--night3) 100%);
+  background:linear-gradient(to bottom,#2a103d 0%,#16081f 45%,#000 100%);
 }
 
-#world.cinematic{
-  filter: blur(4px) brightness(.72) saturate(1.05);
+/* only background gets softer, not poem/text */
+#cinematicOverlay{
+  position:absolute;
+  inset:0;
+  backdrop-filter:blur(0px) brightness(1);
+  background:rgba(20, 6, 25, 0);
+  transition:all 1.2s ease;
+  pointer-events:none;
+  z-index:39;
 }
 
-/* moon and stars */
+#cinematicOverlay.show{
+  backdrop-filter:blur(3px) brightness(.82);
+  background:rgba(20, 6, 25, 0.12);
+}
+
 .moon{
   position:absolute;
-  top:clamp(18px, 4vw, 55px);
-  right:clamp(18px, 4vw, 90px);
+  top:18px;
+  right:18px;
   width:clamp(72px, 12vw, 110px);
   height:clamp(72px, 12vw, 110px);
   border-radius:50%;
@@ -81,7 +86,6 @@ body{
   50%{transform:scale(1.5); opacity:1;}
 }
 
-/* mountains */
 .mountain{
   position:absolute;
   bottom:118px;
@@ -97,7 +101,6 @@ body{
 .m3{ right:16vw; border-bottom-color:rgba(36,15,48,.95); }
 .m4{ right:-70px; transform:scale(1.1); }
 
-/* ground */
 .ground{
   position:absolute;
   bottom:0;
@@ -141,7 +144,6 @@ body{
   to{transform:translateX(20px);}
 }
 
-/* pumpkins */
 #pumpkinField{
   position:absolute;
   inset:0;
@@ -182,7 +184,6 @@ body{
   border-radius:3px;
 }
 
-/* floating effects */
 .heart,
 .spark{
   position:absolute;
@@ -197,7 +198,6 @@ body{
   to{transform:translateY(-180px) scale(1.45);opacity:0;}
 }
 
-/* start */
 .screen{
   position:absolute;
   inset:0;
@@ -245,7 +245,6 @@ button{
   box-shadow:0 0 18px rgba(255,133,214,.35);
 }
 
-/* hints */
 #tapHint,
 #swipeHint{
   position:absolute;
@@ -264,10 +263,9 @@ button{
 #tapHint{ bottom:18px; }
 #swipeHint{ top:18px; }
 
-/* story text */
 #text{
   position:absolute;
-  top:max(20px, env(safe-area-inset-top));
+  top:max(12px, env(safe-area-inset-top));
   width:100%;
   text-align:center;
   padding:0 16px;
@@ -297,12 +295,11 @@ button{
     0 0 30px rgba(180,86,255,.38);
 }
 
-/* walk scene */
 #walkScene{
   position:absolute;
-  bottom:max(58px, env(safe-area-inset-bottom));
+  bottom:max(46px, env(safe-area-inset-bottom));
   width:100%;
-  height:min(34vh, 210px);
+  height:25vh;
   min-height:160px;
   z-index:20;
   pointer-events:none;
@@ -310,7 +307,7 @@ button{
 
 .couple{
   position:absolute;
-  left:-240px;
+  left:-200px;
   bottom:0;
   width:270px;
   height:190px;
@@ -318,9 +315,9 @@ button{
 }
 
 @keyframes walkAndStop{
-  0%{ left:-240px; }
-  60%{ left:calc(50% - 135px); }
-  100%{ left:calc(50% - 135px); }
+  0%{ left:-200px; }
+  60%{ left:calc(50% - 90px); }
+  100%{ left:calc(50% - 90px); }
 }
 
 .person{
@@ -336,10 +333,10 @@ button{
 
 .nameTag{
   position:absolute;
-  top:-24px;
+  top:-18px;
   left:50%;
   transform:translateX(-50%);
-  font-size:16px;
+  font-size:12px;
   font-weight:bold;
   color:#ffd7f4;
   text-shadow:0 0 10px rgba(255,150,225,.8);
@@ -358,7 +355,6 @@ button{
   box-shadow:0 0 10px rgba(255,200,210,.1);
 }
 
-/* boy hair */
 .man .head::before{
   content:"";
   position:absolute;
@@ -370,7 +366,6 @@ button{
   border-radius:60% 60% 28% 28%;
 }
 
-/* girl hair */
 .girl .head::before{
   content:"";
   position:absolute;
@@ -505,7 +500,6 @@ button{
   box-shadow:0 0 12px rgba(255,140,220,.45);
 }
 
-/* romantic moment */
 .kiss-glow{
   position:absolute;
   left:50%;
@@ -556,7 +550,6 @@ button{
   100%{ opacity:0; transform:translateX(-50%) scale(1.85); }
 }
 
-/* poem */
 #poemBox{
   position:absolute;
   inset:0;
@@ -612,57 +605,6 @@ button{
   padding:6px 10px;
   border-radius:999px;
   border:1px solid rgba(255,190,230,.14);
-}
-
-/* responsive */
-@media (max-width: 768px){
-  .moon{
-    right:18px;
-    top:18px;
-    width:72px;
-    height:72px;
-  }
-
-  .couple{
-    transform:scale(.72);
-    transform-origin:bottom left;
-  }
-
-  @keyframes walkAndStop{
-    0%{ left:-200px; }
-    60%{ left:calc(50% - 90px); }
-    100%{ left:calc(50% - 90px); }
-  }
-
-  .nameTag{
-    font-size:12px;
-    top:-18px;
-  }
-
-  #text{
-    font-size:20px;
-    top:max(12px, env(safe-area-inset-top));
-    padding:0 14px;
-    min-height:58px;
-  }
-
-  #walkScene{
-    height:25vh;
-    min-height:160px;
-    bottom:max(46px, env(safe-area-inset-bottom));
-  }
-
-  .mountain{
-    opacity:.9;
-  }
-
-  .poemCard{
-    padding:18px;
-  }
-
-  .poemText{
-    line-height:1.65;
-  }
 }
 </style>
 </head>
@@ -727,6 +669,8 @@ button{
     <div class="kiss-effect">💜✨💜</div>
   </div>
 
+  <div id="cinematicOverlay"></div>
+
   <div id="poemBox">
     <div class="poemCard">
       <div class="poemTitle">Para Ryoko 💜</div>
@@ -759,6 +703,7 @@ const man = document.getElementById("man");
 const girl = document.getElementById("girl");
 const poemText = document.getElementById("poemText");
 const poemPages = document.getElementById("poemPages");
+const cinematicOverlay = document.getElementById("cinematicOverlay");
 
 const messages = [
   "En un mundo lleno de calabazas... 🎃",
@@ -799,6 +744,8 @@ let i = 0;
 let poemIndex = 0;
 let poemVisible = false;
 let heartSpawnerStarted = false;
+let touchStartX = 0;
+let touchEndX = 0;
 
 /* pumpkins */
 for(let n = 0; n < 34; n++){
@@ -876,7 +823,7 @@ function startStory(){
 
   setTimeout(() => {
     poemVisible = true;
-    world.classList.add("cinematic");
+    cinematicOverlay.classList.add("show");
     poemBox.classList.add("show");
     renderPoem();
   }, 18500);
@@ -895,10 +842,9 @@ function startStory(){
   }
 }
 
-/* tap hearts anywhere */
+/* tap hearts */
 document.addEventListener("pointerdown", (e) => {
-  const isButton = e.target.tagName === "BUTTON";
-  if (isButton) return;
+  if (e.target.tagName === "BUTTON") return;
 
   for(let k = 0; k < 7; k++){
     spawnAt(
@@ -910,10 +856,7 @@ document.addEventListener("pointerdown", (e) => {
   }
 });
 
-/* swipe poem pages */
-let touchStartX = 0;
-let touchEndX = 0;
-
+/* swipe */
 document.addEventListener("touchstart", (e) => {
   touchStartX = e.changedTouches[0].clientX;
 }, {passive:true});
@@ -936,7 +879,7 @@ function handleSwipe(){
   renderPoem();
 }
 
-/* arrow keys also */
+/* keyboard */
 document.addEventListener("keydown", (e) => {
   if(!poemVisible) return;
   if(e.key === "ArrowRight"){
