@@ -1,416 +1,573 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Ryoko 💜</title>
+<title>Ahmad 💜 Ryoko</title>
 
 <style>
-* {
-  box-sizing: border-box;
+* { box-sizing: border-box; }
+
+body{
+  margin:0;
+  overflow:hidden;
+  font-family:'Trebuchet MS',sans-serif;
+  background:black;
+  color:white;
 }
 
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, #25103a 0%, #090111 45%, #000 100%);
-  color: white;
-  font-family: 'Courier New', monospace;
-  overflow: hidden;
-  text-align: center;
+#world{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(to bottom,#ffb6c9 0%,#d87bd6 38%,#43204a 70%,#150813 100%);
+  overflow:hidden;
+  transition:3s;
 }
 
-#world {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
+#world.night{
+  background:linear-gradient(to bottom,#2a103d 0%,#16081f 45%,#000 100%);
+}
+
+.moon{
+  position:absolute;
+  top:55px;
+  right:90px;
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #fffdf3, #ffe4f6 65%, #c785ff 100%);
+  box-shadow:0 0 30px rgba(255,220,245,.7), 0 0 80px rgba(215,130,255,.28);
+  opacity:0;
+  transition:2s;
+}
+
+#world.night .moon{
+  opacity:1;
+}
+
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:0;
+  animation:twinkle 3s infinite ease-in-out;
+}
+
+#world.night .star{
+  opacity:1;
+}
+
+@keyframes twinkle{
+  0%,100%{transform:scale(1); opacity:.2;}
+  50%{transform:scale(1.5); opacity:1;}
+}
+
+.mountain{
+  position:absolute;
+  bottom:140px;
+  width:0;
+  height:0;
+  border-left:220px solid transparent;
+  border-right:220px solid transparent;
+  border-bottom:260px solid rgba(42, 17, 55, .95);
+  filter:drop-shadow(0 0 8px rgba(180,80,255,.18));
+}
+.m1{ left:-80px; transform:scale(1.1); }
+.m2{ left:200px; border-bottom-color:rgba(58,26,70,.95); }
+.m3{ right:180px; border-bottom-color:rgba(36,15,48,.95); }
+.m4{ right:-90px; transform:scale(1.15); }
+
+.ground{
+  position:absolute;
+  bottom:0;
+  height:150px;
+  width:100%;
   background:
-    radial-gradient(circle at 50% 20%, rgba(255,120,180,0.18), transparent 30%),
-    linear-gradient(to bottom, #2b1142 0%, #16081f 35%, #090111 65%, #000 100%);
-}
-
-/* Stars */
-.star {
-  position: absolute;
-  border-radius: 50%;
-  background: white;
-  animation: twinkle 3s infinite ease-in-out;
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.15; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.4); }
-}
-
-/* Moon */
-.moon {
-  position: absolute;
-  top: 60px;
-  right: 110px;
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #fff8d6, #ffd2f0 65%, #c681d9 100%);
-  box-shadow:
-    0 0 25px rgba(255, 208, 240, 0.7),
-    0 0 70px rgba(220, 118, 255, 0.25);
-}
-
-/* Mountains */
-.mountain {
-  position: absolute;
-  bottom: 140px;
-  width: 0;
-  height: 0;
-  border-left: 240px solid transparent;
-  border-right: 240px solid transparent;
-  border-bottom: 280px solid rgba(34, 18, 48, 0.95);
-  filter: drop-shadow(0 0 8px rgba(180, 80, 255, 0.15));
-}
-
-.m1 { left: -80px; bottom: 150px; transform: scale(1.1); }
-.m2 { left: 220px; bottom: 160px; border-bottom-color: rgba(45, 24, 60, 0.95); }
-.m3 { right: 180px; bottom: 145px; border-bottom-color: rgba(30, 15, 45, 0.95); }
-.m4 { right: -90px; bottom: 155px; transform: scale(1.2); }
-
-/* Trees */
-.tree {
-  position: absolute;
-  bottom: 120px;
-  width: 18px;
-  height: 110px;
-  background: linear-gradient(to bottom, #2b1b12, #1a0d08);
-  border-radius: 10px;
-}
-
-.tree::before,
-.tree::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #120910;
-  border-radius: 50%;
-}
-
-.tree::before {
-  width: 70px;
-  height: 70px;
-  bottom: 65px;
-}
-
-.tree::after {
-  width: 90px;
-  height: 90px;
-  bottom: 40px;
-}
-
-.t1 { left: 7%; }
-.t2 { left: 17%; transform: scale(0.8); }
-.t3 { right: 14%; }
-.t4 { right: 5%; transform: scale(0.9); }
-
-/* Ground */
-.ground {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 155px;
-  background:
-    linear-gradient(to bottom, rgba(60, 25, 40, 0.35), rgba(10, 4, 14, 0.9)),
+    linear-gradient(to bottom, rgba(90,35,50,.2), rgba(12,5,14,.95)),
     repeating-linear-gradient(
       90deg,
-      rgba(255,255,255,0.02) 0px,
-      rgba(255,255,255,0.02) 2px,
+      rgba(255,255,255,.02) 0px,
+      rgba(255,255,255,.02) 2px,
       transparent 2px,
-      transparent 18px
+      transparent 16px
     );
-  border-top: 2px solid rgba(255, 130, 220, 0.15);
+  border-top:2px solid rgba(255,170,220,.12);
 }
 
-/* Path */
-.path {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 420px;
-  height: 170px;
-  background: linear-gradient(to bottom, rgba(120,70,90,0.15), rgba(20,10,16,0.7));
-  clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
-  opacity: 0.9;
+.path{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:440px;
+  height:170px;
+  background:linear-gradient(to bottom, rgba(255,210,225,.07), rgba(25,10,20,.7));
+  clip-path:polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+}
+
+.mist{
+  position:absolute;
+  left:-10%;
+  bottom:78px;
+  width:130%;
+  height:120px;
+  background:radial-gradient(circle, rgba(255,255,255,.05), transparent 60%);
+  filter:blur(14px);
+  animation:mistMove 18s linear infinite alternate;
+}
+@keyframes mistMove{
+  from{transform:translateX(-20px);}
+  to{transform:translateX(20px);}
 }
 
 /* Pumpkins */
-.pumpkin {
-  position: absolute;
-  bottom: 110px;
-  width: 34px;
-  height: 26px;
-  background: #ff8a1d;
-  border-radius: 45% 45% 42% 42%;
+.pumpkin{
+  position:absolute;
+  width:42px;
+  height:30px;
+  background:#ff8a1d;
+  border-radius:48% 48% 42% 42%;
   box-shadow:
-    inset -5px 0 0 rgba(180, 75, 0, 0.35),
-    inset 5px 0 0 rgba(255, 190, 90, 0.2),
-    0 0 12px rgba(255, 136, 0, 0.18);
+    inset -6px 0 0 rgba(175,75,0,.35),
+    inset 6px 0 0 rgba(255,190,90,.2),
+    0 0 12px rgba(255,136,0,.22);
 }
-
 .pumpkin::before,
-.pumpkin::after {
-  content: "";
-  position: absolute;
-  top: 1px;
-  width: 10px;
-  height: 22px;
-  border-radius: 45%;
-  background: rgba(255, 130, 20, 0.92);
+.pumpkin::after{
+  content:"";
+  position:absolute;
+  top:2px;
+  width:10px;
+  height:24px;
+  border-radius:45%;
+  background:rgba(255,130,20,.94);
+}
+.pumpkin::before{ left:6px; }
+.pumpkin::after{ right:6px; }
+.pumpkin span{
+  position:absolute;
+  top:-8px;
+  left:50%;
+  width:5px;
+  height:10px;
+  background:#5d8f2a;
+  transform:translateX(-50%);
+  border-radius:3px;
 }
 
-.pumpkin::before { left: 4px; }
-.pumpkin::after { right: 4px; }
-
-.pumpkin span {
-  position: absolute;
-  top: -7px;
-  left: 50%;
-  width: 4px;
-  height: 8px;
-  background: #5d8f2a;
-  transform: translateX(-50%);
-  border-radius: 3px;
+/* Floating hearts */
+.heart,
+.spark{
+  position:absolute;
+  animation:float 5s linear forwards;
+  opacity:.95;
 }
 
-.p1 { left: 18%; }
-.p2 { left: 23%; transform: scale(0.8); }
-.p3 { right: 18%; }
-.p4 { right: 23%; transform: scale(0.85); }
-
-/* Characters area */
-#walkScene {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 82px;
-  height: 160px;
-  pointer-events: none;
+@keyframes float{
+  from{transform:translateY(0) scale(1);}
+  to{transform:translateY(-200px) scale(1.45);opacity:0;}
 }
 
-/* Couple */
-.couple {
-  position: absolute;
-  left: -180px;
-  bottom: 0;
-  width: 170px;
-  height: 140px;
-  animation: walkAcross 24s linear infinite;
+/* Start screen */
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:50;
 }
 
-@keyframes walkAcross {
-  0%   { left: -220px; }
-  100% { left: calc(100vw + 40px); }
+.screen.active{
+  display:flex;
 }
 
-.person {
-  position: absolute;
-  bottom: 0;
-  width: 58px;
-  height: 125px;
+.card{
+  background:rgba(8,4,16,.52);
+  border:1px solid rgba(255,190,230,.18);
+  box-shadow:0 0 30px rgba(180,85,255,.18);
+  border-radius:24px;
+  padding:32px;
+  width:min(92%, 700px);
+  text-align:center;
+  backdrop-filter:blur(8px);
 }
 
-.man { left: 12px; }
-.girl { left: 84px; }
-
-/* heads */
-.head {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 28px;
-  height: 28px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: #0d0611;
-  box-shadow: 0 0 8px rgba(255, 155, 255, 0.12);
+.card h2{
+  font-size:clamp(30px,5vw,58px);
+  margin:0 0 12px;
+  color:#ffb7ef;
+  text-shadow:0 0 12px rgba(255,145,230,.85), 0 0 28px rgba(174,84,255,.35);
 }
 
-/* body */
-.bodyShape {
-  position: absolute;
-  top: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #0d0611;
+.card p{
+  font-size:clamp(16px,2.2vw,24px);
+  opacity:.95;
 }
 
-.man .bodyShape {
-  width: 22px;
-  height: 44px;
-  border-radius: 10px 10px 8px 8px;
+button{
+  margin-top:18px;
+  padding:14px 24px;
+  background:linear-gradient(135deg,#ff8fd8,#9b5cff);
+  color:white;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  font-size:18px;
+  box-shadow:0 0 18px rgba(255,133,214,.35);
 }
 
-.girl .bodyShape {
-  width: 26px;
-  height: 42px;
-  border-radius: 10px 10px 15px 15px;
+/* Story text */
+#text{
+  position:absolute;
+  top:62px;
+  width:100%;
+  text-align:center;
+  padding:0 20px;
+  font-size:clamp(24px,3.2vw,42px);
+  color:white;
+  text-shadow:0 0 12px rgba(255,150,245,.26);
+  z-index:20;
+  min-height:70px;
+  transition:opacity .8s ease, transform .8s ease;
 }
 
-.girl .dress {
-  position: absolute;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 18px solid transparent;
-  border-right: 18px solid transparent;
-  border-top: 42px solid #0d0611;
+.fadeText{
+  opacity:0;
+  transform:translateY(12px);
 }
 
-/* arms */
-.arm {
-  position: absolute;
-  top: 34px;
-  width: 9px;
-  height: 42px;
-  background: #0d0611;
-  border-radius: 10px;
-  transform-origin: top center;
-  animation: armSwing 0.7s ease-in-out infinite alternate;
+.showText{
+  opacity:1;
+  transform:translateY(0);
 }
 
-.arm.left  { left: 13px; }
-.arm.right { right: 13px; animation-delay: 0.35s; }
-
-@keyframes armSwing {
-  from { transform: rotate(18deg); }
-  to   { transform: rotate(-18deg); }
-}
-
-/* legs */
-.leg {
-  position: absolute;
-  bottom: 0;
-  width: 9px;
-  height: 52px;
-  background: #0d0611;
-  border-radius: 10px;
-  transform-origin: top center;
-}
-
-.person .leg.left {
-  left: 18px;
-  animation: legLeft 0.7s ease-in-out infinite alternate;
-}
-
-.person .leg.right {
-  right: 18px;
-  animation: legRight 0.7s ease-in-out infinite alternate;
-}
-
-@keyframes legLeft {
-  from { transform: rotate(22deg); }
-  to   { transform: rotate(-20deg); }
-}
-
-@keyframes legRight {
-  from { transform: rotate(-20deg); }
-  to   { transform: rotate(22deg); }
-}
-
-/* hold hands */
-.hand-link {
-  position: absolute;
-  left: 68px;
-  top: 65px;
-  width: 24px;
-  height: 4px;
-  background: rgba(255, 150, 220, 0.8);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 140, 220, 0.45);
-}
-
-/* floating hearts */
-.heart {
-  position: absolute;
-  font-size: 18px;
-  animation: float 5s linear forwards;
-  opacity: 0.9;
-}
-
-@keyframes float {
-  from { transform: translateY(0) scale(1); opacity: 0.95; }
-  to   { transform: translateY(-180px) scale(1.4); opacity: 0; }
-}
-
-/* text scenes */
-.scene {
-  position: absolute;
-  inset: 0;
-  display: none;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 88px;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.active {
-  display: flex;
-}
-
-.text {
-  font-size: clamp(24px, 3vw, 40px);
-  max-width: 85%;
-  opacity: 0;
-  transform: translateY(18px) scale(0.98);
-  animation: fadeText 1.8s forwards;
-  text-shadow: 0 0 12px rgba(255, 150, 255, 0.25);
-}
-
-.glow {
-  color: #ffb6f3;
+.glowText{
+  color:#ffb7f2;
   text-shadow:
-    0 0 10px rgba(255, 140, 240, 0.8),
-    0 0 22px rgba(200, 90, 255, 0.55),
-    0 0 40px rgba(160, 70, 255, 0.22);
+    0 0 12px rgba(255,145,230,.88),
+    0 0 30px rgba(180,86,255,.38);
 }
 
-.final {
-  font-size: clamp(28px, 3.4vw, 48px);
-  line-height: 1.5;
-  color: #ffb3f4;
-  text-shadow:
-    0 0 10px rgba(255, 155, 240, 0.9),
-    0 0 28px rgba(191, 86, 255, 0.45);
+/* Walk scene */
+#walkScene{
+  position:absolute;
+  bottom:78px;
+  width:100%;
+  height:210px;
+  z-index:15;
+  pointer-events:none;
 }
 
-@keyframes fadeText {
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+.couple{
+  position:absolute;
+  left:-240px;
+  bottom:0;
+  width:270px;
+  height:190px;
+  animation:walkAndStop 12s forwards;
+}
+
+@keyframes walkAndStop{
+  0%{ left:-240px; }
+  60%{ left:calc(50% - 135px); }
+  100%{ left:calc(50% - 135px); }
+}
+
+.person{
+  position:absolute;
+  width:100px;
+  height:175px;
+  bottom:0;
+  transition:transform 1.2s ease;
+}
+
+.man{ left:10px; }
+.girl{ left:150px; }
+
+.nameTag{
+  position:absolute;
+  top:-24px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:16px;
+  font-weight:bold;
+  color:#ffd7f4;
+  text-shadow:0 0 10px rgba(255,150,225,.8);
+  white-space:nowrap;
+}
+
+.head{
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:40px;
+  height:46px;
+  background:#f6d2bd;
+  border-radius:46% 46% 50% 50%;
+  box-shadow:0 0 10px rgba(255,200,210,.1);
+}
+
+/* Boy hair */
+.man .head::before{
+  content:"";
+  position:absolute;
+  top:-3px;
+  left:-1px;
+  width:42px;
+  height:18px;
+  background:#24121d;
+  border-radius:60% 60% 28% 28%;
+}
+
+/* Girl hair */
+.girl .head::before{
+  content:"";
+  position:absolute;
+  top:-6px;
+  left:-5px;
+  width:50px;
+  height:24px;
+  background:#23111e;
+  border-radius:65% 65% 35% 35%;
+}
+
+.girl .head::after{
+  content:"";
+  position:absolute;
+  top:8px;
+  left:-4px;
+  width:9px;
+  height:24px;
+  background:#23111e;
+  border-radius:10px;
+  box-shadow:39px 0 0 #23111e;
+}
+
+.eye{
+  position:absolute;
+  top:17px;
+  width:4px;
+  height:4px;
+  background:#2d1827;
+  border-radius:50%;
+}
+.eye.left{ left:12px; }
+.eye.right{ right:12px; }
+
+.blush{
+  position:absolute;
+  top:24px;
+  width:8px;
+  height:5px;
+  border-radius:50%;
+  background:rgba(255,120,160,.35);
+}
+.blush.left{ left:6px; }
+.blush.right{ right:6px; }
+
+.body{
+  position:absolute;
+  top:42px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.man .body{
+  width:34px;
+  height:62px;
+  background:#6680ff;
+  border-radius:12px 12px 8px 8px;
+}
+
+.girl .body{
+  width:30px;
+  height:42px;
+  background:#ff84d4;
+  border-radius:12px 12px 10px 10px;
+}
+
+.girl .dress{
+  position:absolute;
+  top:82px;
+  left:50%;
+  transform:translateX(-50%);
+  width:0;
+  height:0;
+  border-left:28px solid transparent;
+  border-right:28px solid transparent;
+  border-top:56px solid #ff84d4;
+}
+
+.arm{
+  position:absolute;
+  top:52px;
+  width:10px;
+  height:48px;
+  background:#f6d2bd;
+  border-radius:10px;
+  transform-origin:top center;
+}
+.arm.left{ left:18px; }
+.arm.right{ right:18px; }
+
+.leg{
+  position:absolute;
+  bottom:0;
+  width:10px;
+  height:64px;
+  background:#1b1020;
+  border-radius:10px;
+  transform-origin:top center;
+}
+.leg.left{ left:31px; }
+.leg.right{ right:31px; }
+
+.walking .arm.left{ animation:armSwing .7s ease-in-out infinite alternate; }
+.walking .arm.right{ animation:armSwing2 .7s ease-in-out infinite alternate; }
+.walking .leg.left{ animation:legLeft .7s ease-in-out infinite alternate; }
+.walking .leg.right{ animation:legRight .7s ease-in-out infinite alternate; }
+
+@keyframes armSwing{
+  from{ transform:rotate(18deg); }
+  to{ transform:rotate(-18deg); }
+}
+@keyframes armSwing2{
+  from{ transform:rotate(-18deg); }
+  to{ transform:rotate(18deg); }
+}
+@keyframes legLeft{
+  from{ transform:rotate(22deg); }
+  to{ transform:rotate(-20deg); }
+}
+@keyframes legRight{
+  from{ transform:rotate(-20deg); }
+  to{ transform:rotate(22deg); }
+}
+
+.hand-link{
+  position:absolute;
+  left:116px;
+  top:86px;
+  width:34px;
+  height:5px;
+  background:rgba(255,198,220,.95);
+  border-radius:10px;
+  box-shadow:0 0 12px rgba(255,140,220,.45);
+}
+
+/* Romantic moment */
+.kiss-glow{
+  position:absolute;
+  left:50%;
+  bottom:96px;
+  width:100px;
+  height:100px;
+  transform:translateX(-50%) scale(.4);
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,170,230,.55), rgba(255,120,210,.18), transparent 70%);
+  filter:blur(4px);
+  opacity:0;
+}
+
+.kiss-effect{
+  position:absolute;
+  left:50%;
+  bottom:128px;
+  transform:translateX(-50%);
+  font-size:28px;
+  opacity:0;
+}
+
+.kiss-active .kiss-glow{
+  animation:kissGlow 2.5s forwards;
+}
+
+.kiss-active .kiss-effect{
+  animation:kissPop 2s forwards;
+}
+
+.kiss-active .man{
+  transform:translateX(24px) rotate(4deg);
+}
+
+.kiss-active .girl{
+  transform:translateX(-22px) rotate(-4deg);
+}
+
+@keyframes kissGlow{
+  0%{ opacity:0; transform:translateX(-50%) scale(.3); }
+  40%{ opacity:1; transform:translateX(-50%) scale(1); }
+  100%{ opacity:0; transform:translateX(-50%) scale(1.55); }
+}
+
+@keyframes kissPop{
+  0%{ opacity:0; transform:translateX(-50%) scale(.4); }
+  35%{ opacity:1; transform:translateX(-50%) scale(1.25); }
+  100%{ opacity:0; transform:translateX(-50%) scale(1.85); }
+}
+
+/* Final poem */
+#poemBox{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:40;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 2s ease;
+}
+
+#poemBox.show{
+  opacity:1;
+}
+
+.poemCard{
+  width:min(92%, 820px);
+  background:rgba(8,4,16,.55);
+  border:1px solid rgba(255,190,230,.18);
+  box-shadow:0 0 35px rgba(180,85,255,.2);
+  border-radius:24px;
+  padding:28px;
+  backdrop-filter:blur(8px);
+}
+
+.poemTitle{
+  font-size:clamp(30px,4vw,52px);
+  color:#ffb7ef;
+  margin-bottom:14px;
+  text-shadow:0 0 12px rgba(255,145,230,.85), 0 0 28px rgba(174,84,255,.35);
+}
+
+.poemText{
+  font-size:clamp(18px,2vw,26px);
+  line-height:1.8;
+  color:#ffd9f5;
+  text-shadow:0 0 10px rgba(255,160,240,.18);
+}
+
+@media (max-width: 768px){
+  .moon{
+    right:28px;
+    top:30px;
+    width:84px;
+    height:84px;
   }
-}
 
-.small {
-  font-size: clamp(18px, 2vw, 24px);
-  opacity: 0.9;
-}
+  .couple{
+    transform:scale(.9);
+    transform-origin:bottom left;
+  }
 
-/* soft mist */
-.mist {
-  position: absolute;
-  left: -10%;
-  bottom: 80px;
-  width: 130%;
-  height: 120px;
-  background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 60%);
-  animation: mistMove 18s linear infinite alternate;
-  filter: blur(14px);
-}
-
-@keyframes mistMove {
-  from { transform: translateX(-20px); }
-  to { transform: translateX(20px); }
+  .nameTag{
+    font-size:14px;
+  }
 }
 </style>
 </head>
@@ -424,25 +581,25 @@ body {
   <div class="mountain m3"></div>
   <div class="mountain m4"></div>
 
-  <div class="tree t1"></div>
-  <div class="tree t2"></div>
-  <div class="tree t3"></div>
-  <div class="tree t4"></div>
-
-  <div class="pumpkin p1"><span></span></div>
-  <div class="pumpkin p2"><span></span></div>
-  <div class="pumpkin p3"><span></span></div>
-  <div class="pumpkin p4"><span></span></div>
-
   <div class="mist"></div>
   <div class="path"></div>
   <div class="ground"></div>
 
+  <div id="pumpkinField"></div>
+
+  <div id="text" class="showText"></div>
+
   <div id="walkScene">
     <div class="couple">
-      <div class="person man">
-        <div class="head"></div>
-        <div class="bodyShape"></div>
+      <div id="man" class="person man walking">
+        <div class="nameTag">Ahmad</div>
+        <div class="head">
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="blush left"></div>
+          <div class="blush right"></div>
+        </div>
+        <div class="body"></div>
         <div class="arm left"></div>
         <div class="arm right"></div>
         <div class="leg left"></div>
@@ -451,9 +608,15 @@ body {
 
       <div class="hand-link"></div>
 
-      <div class="person girl">
-        <div class="head"></div>
-        <div class="bodyShape"></div>
+      <div id="girl" class="person girl walking">
+        <div class="nameTag">Ryoko</div>
+        <div class="head">
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="blush left"></div>
+          <div class="blush right"></div>
+        </div>
+        <div class="body"></div>
         <div class="dress"></div>
         <div class="arm left"></div>
         <div class="arm right"></div>
@@ -461,123 +624,157 @@ body {
         <div class="leg right"></div>
       </div>
     </div>
+
+    <div class="kiss-glow"></div>
+    <div class="kiss-effect">💜✨💜</div>
+  </div>
+
+  <div id="poemBox">
+    <div class="poemCard">
+      <div class="poemTitle">Para Ryoko 💜</div>
+      <div class="poemText">
+        En este mundo de calabazas y cielos en calma,<br>
+        encontré en ti una luz que abraza mi alma.<br><br>
+
+        Si el camino es largo, quiero recorrerlo contigo,<br>
+        con tu nombre en mi pecho y tu paz como abrigo.<br><br>
+
+        Eres la ternura que vuelve bonito el paisaje,<br>
+        la razón por la que cada paso se siente viaje.<br><br>
+
+        Y si la noche cae, y todo queda en silencio,<br>
+        quiero seguir a tu lado, amándote despacio y sin miedo al tiempo.<br><br>
+
+        Porque entre mil lugares, uno siempre será mi destino:<br>
+        tú, Ryoko... conmigo.<br><br>
+
+        <strong>Con amor, Ahmad 🖤</strong>
+      </div>
+    </div>
   </div>
 </div>
 
-<div id="s1" class="scene active">
-  <div class="text">In a quiet world... 🌌</div>
-</div>
-
-<div id="s2" class="scene">
-  <div class="text">Full of unknown places... 🌍</div>
-</div>
-
-<div id="s3" class="scene">
-  <div class="text">And endless nature to explore... 🌿</div>
-</div>
-
-<div id="s4" class="scene">
-  <div class="text">Then two souls began to walk together...</div>
-</div>
-
-<div id="s5" class="scene">
-  <div class="text glow">Ryoko... 💜</div>
-</div>
-
-<div id="s6" class="scene">
-  <div class="text">With you, even silence feels beautiful.</div>
-</div>
-
-<div id="s7" class="scene">
-  <div class="text">Every road feels softer when you’re there.</div>
-</div>
-
-<div id="s8" class="scene">
-  <div class="text">Every new place becomes a memory. ✨</div>
-</div>
-
-<div id="s9" class="scene">
-  <div class="text">And even the little things matter...</div>
-</div>
-
-<div id="s10" class="scene">
-  <div class="text glow">Like pumpkins... 🎃💜</div>
-</div>
-
-<div id="s11" class="scene">
-  <div class="text">Because they remind me of your smile.</div>
-</div>
-
-<div id="s12" class="scene">
-  <div class="text">And in this huge world...</div>
-</div>
-
-<div id="s13" class="scene">
-  <div class="text">There is only one place I truly want to be...</div>
-</div>
-
-<div id="s14" class="scene">
-  <div class="text glow">Walking beside you.</div>
-</div>
-
-<div id="s15" class="scene">
-  <div class="final">
-    Ryoko... 💜<br><br>
-    It's me... Ahmad 🖤<br><br>
-    I want to keep discovering<br>
-    this world with you.<br><br>
-    <span class="small">Step by step. Place by place. Heart by heart.</span>
+<div id="startScreen" class="screen active">
+  <div class="card">
+    <h2>Un mundo de calabazas para Ryoko 🎃💜</h2>
+    <p>Hecho por Ahmad, con cariño, magia y un pedacito de su corazón.</p>
+    <button onclick="start()">Empezar 💜</button>
   </div>
 </div>
 
-<audio autoplay loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-/* Scene timing */
-let current = 1;
-const total = 15;
+const world = document.getElementById("world");
+const text = document.getElementById("text");
+const music = document.getElementById("music");
+const pumpkinField = document.getElementById("pumpkinField");
+const poemBox = document.getElementById("poemBox");
+const walkScene = document.getElementById("walkScene");
+const man = document.getElementById("man");
+const girl = document.getElementById("girl");
 
-function nextScene() {
-  const prev = document.getElementById("s" + current);
-  if (prev) prev.classList.remove("active");
-  current++;
-  if (current <= total) {
-    const next = document.getElementById("s" + current);
-    if (next) next.classList.add("active");
-  } else {
-    current = total;
-    document.getElementById("s" + total).classList.add("active");
-  }
+const messages = [
+  "En un mundo lleno de calabazas... 🎃",
+  "Todo se siente más cálido cuando pienso en ti.",
+  "Ryoko... 💜",
+  "Cada paso contigo se vuelve algo bonito.",
+  "Cada rincón se siente más suave si estás tú.",
+  "Y hasta la noche parece más dulce a tu lado.",
+  "Porque en este pequeño mundo...",
+  "mi lugar favorito siempre será contigo."
+];
+
+let i = 0;
+
+/* pumpkins */
+for(let n = 0; n < 30; n++){
+  let p = document.createElement("div");
+  p.className = "pumpkin";
+  p.style.left = Math.random() * 100 + "%";
+  p.style.bottom = (88 + Math.random() * 42) + "px";
+  p.style.transform = `scale(${0.8 + Math.random() * 0.7})`;
+  let stem = document.createElement("span");
+  p.appendChild(stem);
+  pumpkinField.appendChild(p);
 }
-
-setInterval(nextScene, 3200);
 
 /* stars */
-for (let i = 0; i < 120; i++) {
-  const s = document.createElement("div");
-  s.className = "star";
-  const size = Math.random() * 2.5 + 1;
-  s.style.width = size + "px";
-  s.style.height = size + "px";
-  s.style.left = Math.random() * 100 + "vw";
-  s.style.top = Math.random() * 70 + "vh";
-  s.style.animationDelay = Math.random() * 3 + "s";
-  document.getElementById("world").appendChild(s);
+for(let s = 0; s < 110; s++){
+  let st = document.createElement("div");
+  st.className = "star";
+  st.style.left = Math.random() * 100 + "vw";
+  st.style.top = Math.random() * 70 + "vh";
+  st.style.animationDelay = Math.random() * 3 + "s";
+  world.appendChild(st);
 }
 
-/* floating hearts */
-setInterval(() => {
-  const h = document.createElement("div");
-  h.className = "heart";
-  h.innerHTML = Math.random() > 0.5 ? "💜" : "✨";
-  h.style.left = (Math.random() * 60 + 20) + "vw";
-  h.style.bottom = (Math.random() * 70 + 70) + "px";
-  h.style.fontSize = (Math.random() * 14 + 14) + "px";
-  document.getElementById("world").appendChild(h);
-  setTimeout(() => h.remove(), 5000);
-}, 450);
+function start(){
+  music.play().catch(()=>{});
+  document.getElementById("startScreen").classList.remove("active");
+  startStory();
+}
+
+function showText(msg, glow = false){
+  text.classList.remove("showText");
+  setTimeout(() => {
+    text.innerHTML = msg;
+    text.className = glow ? "showText glowText" : "showText";
+  }, 250);
+}
+
+function startStory(){
+  showText(messages[0]);
+
+  const interval = setInterval(() => {
+    i++;
+    if(i < messages.length){
+      const glow = messages[i].includes("Ryoko");
+      showText(messages[i], glow);
+    } else {
+      clearInterval(interval);
+      text.innerHTML = "";
+    }
+  }, 3200);
+
+  setTimeout(() => {
+    world.classList.add("night");
+  }, 5000);
+
+  setTimeout(() => {
+    walkScene.classList.add("kiss-active");
+    man.classList.remove("walking");
+    girl.classList.remove("walking");
+
+    for(let h = 0; h < 28; h++){
+      let heart = document.createElement("div");
+      heart.className = Math.random() > 0.35 ? "heart" : "spark";
+      heart.innerHTML = Math.random() > 0.35 ? "💜" : "✨";
+      heart.style.left = (47 + Math.random() * 6) + "vw";
+      heart.style.bottom = (100 + Math.random() * 30) + "px";
+      heart.style.fontSize = (16 + Math.random() * 18) + "px";
+      world.appendChild(heart);
+      setTimeout(() => heart.remove(), 4200);
+    }
+  }, 8500);
+
+  setInterval(() => {
+    let thing = document.createElement("div");
+    thing.className = Math.random() > 0.5 ? "heart" : "spark";
+    thing.innerHTML = Math.random() > 0.5 ? "💜" : "✨";
+    thing.style.left = (20 + Math.random() * 60) + "vw";
+    thing.style.bottom = (80 + Math.random() * 70) + "px";
+    thing.style.fontSize = (14 + Math.random() * 14) + "px";
+    world.appendChild(thing);
+    setTimeout(() => thing.remove(), 5000);
+  }, 500);
+
+  setTimeout(() => {
+    poemBox.classList.add("show");
+  }, 18500);
+}
 </script>
 
 </body>
