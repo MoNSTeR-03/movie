@@ -11,14 +11,9 @@
   --pink:#ff8fd8;
   --pink2:#ffb6ea;
   --violet:#8d4dff;
-  --dark:#090111;
   --sky1:#ffb2c8;
   --sky2:#ff8dc2;
   --sky3:#6e4b9c;
-  --night1:#1a0f2d;
-  --night2:#0b0618;
-  --ground1:#2f1730;
-  --ground2:#120810;
 }
 
 body{
@@ -54,7 +49,7 @@ button:hover{
   inset:0;
   overflow:hidden;
   background:
-    linear-gradient(to bottom, var(--sky1) 0%, var(--sky2) 35%, var(--sky3) 65%, var(--night2) 100%);
+    linear-gradient(to bottom, var(--sky1) 0%, var(--sky2) 35%, var(--sky3) 65%, #0b0618 100%);
   transition:background 3s ease;
 }
 
@@ -118,7 +113,6 @@ button:hover{
   50%{transform:scale(1.5); opacity:1;}
 }
 
-/* mountains */
 .mountain{
   position:absolute;
   bottom:145px;
@@ -133,7 +127,6 @@ button:hover{
 .m3{ right:190px; border-bottom-color:rgba(46,24,66,.95); }
 .m4{ right:-100px; transform:scale(1.2); }
 
-/* ground */
 .path{
   position:absolute;
   left:50%;
@@ -162,7 +155,6 @@ button:hover{
   border-top:2px solid rgba(255,170,220,.14);
 }
 
-/* place decorations */
 .place-item{
   position:absolute;
   opacity:0;
@@ -170,7 +162,6 @@ button:hover{
 }
 .place-item.show{ opacity:1; }
 
-/* forest trees */
 .tree{
   position:absolute;
   bottom:118px;
@@ -190,7 +181,6 @@ button:hover{
 .tree::before{ width:68px; height:68px; bottom:66px; }
 .tree::after{ width:90px; height:90px; bottom:38px; }
 
-/* pumpkins */
 .pumpkin{
   position:absolute;
   bottom:110px;
@@ -223,7 +213,6 @@ button:hover{
   border-radius:3px;
 }
 
-/* fireflies */
 .firefly{
   position:absolute;
   width:6px; height:6px;
@@ -234,16 +223,14 @@ button:hover{
   transition:opacity 1s ease;
   animation:floatBug 6s linear infinite alternate;
 }
-.place-fireflies.show{
-  opacity:1;
-}
+.place-fireflies.show{ opacity:1; }
+
 @keyframes floatBug{
   0%{ transform:translate(0,0); }
   50%{ transform:translate(20px,-15px); }
   100%{ transform:translate(-12px,10px); }
 }
 
-/* mist / sparkles */
 .mist{
   position:absolute;
   left:-10%;
@@ -259,13 +246,7 @@ button:hover{
   to{ transform:translateX(20px); }
 }
 
-.spark{
-  position:absolute;
-  font-size:16px;
-  opacity:.9;
-  animation:float 5s linear forwards;
-}
-.heart{
+.spark, .heart{
   position:absolute;
   font-size:18px;
   opacity:.95;
@@ -281,8 +262,10 @@ button:hover{
   position:absolute;
   inset:0;
   display:none;
-  z-index:20;
+  z-index:50;
+  pointer-events:auto;
 }
+
 .screen.active{
   display:flex;
 }
@@ -299,7 +282,9 @@ button:hover{
 }
 
 .card{
-  background:rgba(12,6,24,.42);
+  position:relative;
+  z-index:60;
+  background:rgba(12,6,24,.48);
   border:1px solid rgba(255,180,235,.18);
   box-shadow:0 0 35px rgba(186,93,255,.16);
   backdrop-filter:blur(10px);
@@ -351,17 +336,9 @@ button:hover{
   align-items:center;
   gap:8px;
 }
-.choice .emoji{
-  font-size:34px;
-}
-.choice .label{
-  font-size:20px;
-  font-weight:700;
-}
-.choice .small{
-  font-size:14px;
-  opacity:.8;
-}
+.choice .emoji{ font-size:34px; }
+.choice .label{ font-size:20px; font-weight:700; }
+.choice .small{ font-size:14px; opacity:.8; }
 
 /* ---------- STORY TEXT ---------- */
 .sceneText{
@@ -374,10 +351,7 @@ button:hover{
   z-index:12;
   pointer-events:none;
 }
-
-.sceneText.active{
-  display:flex;
-}
+.sceneText.active{ display:flex; }
 
 .story-text{
   font-size:clamp(24px,3.2vw,42px);
@@ -387,14 +361,12 @@ button:hover{
   animation:fadeText 1.7s forwards;
   text-shadow:0 0 12px rgba(255,160,240,.24);
 }
-
 .story-glow{
   color:#ffb7f1;
   text-shadow:
     0 0 12px rgba(255,150,235,.88),
     0 0 30px rgba(180,86,255,.4);
 }
-
 .final{
   font-size:clamp(30px,3.8vw,52px);
   line-height:1.45;
@@ -403,12 +375,10 @@ button:hover{
     0 0 12px rgba(255,160,240,.95),
     0 0 34px rgba(191,86,255,.42);
 }
-
 .final-small{
   font-size:clamp(18px,2vw,24px);
   opacity:.94;
 }
-
 @keyframes fadeText{
   to{
     opacity:1;
@@ -448,7 +418,6 @@ button:hover{
   height:165px;
   animation:walkAndStop 12s forwards;
 }
-
 @keyframes walkAndStop{
   0%{ left:-240px; }
   60%{ left:calc(50% - 125px); }
@@ -462,7 +431,6 @@ button:hover{
   height:155px;
   transition:transform 1.2s ease;
 }
-
 .man{ left:18px; }
 .girl{ left:136px; }
 
@@ -475,9 +443,7 @@ button:hover{
   transform:translateX(-50%);
   border-radius:45% 45% 48% 48%;
   background:#f0c7ae;
-  box-shadow:0 0 10px rgba(255,180,200,.12);
 }
-
 .eye{
   position:absolute;
   top:16px;
@@ -488,7 +454,6 @@ button:hover{
 }
 .eye.left{ left:11px; }
 .eye.right{ right:11px; }
-
 .blush{
   position:absolute;
   top:23px;
@@ -510,7 +475,6 @@ button:hover{
   background:#1c0e18;
   border-radius:55% 55% 30% 30%;
 }
-
 .girl .head::before{
   content:"";
   position:absolute;
@@ -529,21 +493,18 @@ button:hover{
   left:50%;
   transform:translateX(-50%);
 }
-
 .man .bodyShape{
   width:30px;
   height:56px;
   background:#5d75ff;
   border-radius:11px 11px 8px 8px;
 }
-
 .girl .bodyShape{
   width:28px;
   height:42px;
   background:#ff7dcf;
   border-radius:12px 12px 10px 10px;
 }
-
 .girl .dress{
   position:absolute;
   top:76px;
@@ -554,7 +515,6 @@ button:hover{
   border-left:25px solid transparent;
   border-right:25px solid transparent;
   border-top:52px solid #ff7dcf;
-  filter:drop-shadow(0 0 5px rgba(255,120,200,.2));
 }
 
 .arm{
@@ -626,7 +586,6 @@ button:hover{
   filter:blur(4px);
   opacity:0;
 }
-
 .kiss-effect{
   position:absolute;
   left:50%;
@@ -635,19 +594,10 @@ button:hover{
   font-size:28px;
   opacity:0;
 }
-
-.kiss-active .kiss-glow{
-  animation:kissGlow 2.5s forwards;
-}
-.kiss-active .kiss-effect{
-  animation:kissPop 2s forwards;
-}
-.kiss-active .man{
-  transform:translateX(24px) rotate(4deg);
-}
-.kiss-active .girl{
-  transform:translateX(-22px) rotate(-4deg);
-}
+.kiss-active .kiss-glow{ animation:kissGlow 2.5s forwards; }
+.kiss-active .kiss-effect{ animation:kissPop 2s forwards; }
+.kiss-active .man{ transform:translateX(24px) rotate(4deg); }
+.kiss-active .girl{ transform:translateX(-22px) rotate(-4deg); }
 
 @keyframes kissGlow{
   0%{ opacity:0; transform:translateX(-50%) scale(.3); }
@@ -660,11 +610,8 @@ button:hover{
   100%{ opacity:0; transform:translateX(-50%) scale(1.85); }
 }
 
-/* mobile */
 @media (max-width:820px){
-  .choice-grid{
-    grid-template-columns:1fr;
-  }
+  .choice-grid{ grid-template-columns:1fr; }
   .sun,.moon{
     right:32px;
     top:34px;
@@ -675,16 +622,12 @@ button:hover{
     transform:scale(.92);
     transform-origin:bottom left;
   }
-  .names{
-    font-size:19px;
-  }
+  .names{ font-size:19px; }
 }
 </style>
 </head>
 <body>
-
 <div id="app">
-
   <div id="world">
     <div class="sun"></div>
     <div class="moon"></div>
@@ -740,19 +683,17 @@ button:hover{
     </div>
   </div>
 
-  <!-- START -->
   <div id="startScreen" class="screen active">
     <div class="overlay-center">
       <div class="card">
         <h1 class="big-title">Un pequeño juego para Ryoko 💜</h1>
         <p class="sub">Hecho por Ahmad, con un poquito de magia, naturaleza y amor.</p>
         <p class="sub">Toca para empezar esta pequeña aventura.</p>
-        <button class="start-btn" id="startBtn">Empezar 💜</button>
+        <button class="start-btn" onclick="startExperience()">Empezar 💜</button>
       </div>
     </div>
   </div>
 
-  <!-- CHOICE -->
   <div id="choiceScreen" class="screen">
     <div class="overlay-center">
       <div class="card">
@@ -760,19 +701,19 @@ button:hover{
         <p class="sub">¿Dónde quieres que empiece esta pequeña historia?</p>
 
         <div class="choice-grid">
-          <button class="choice" data-place="bosque">
+          <button class="choice" onclick="choosePlace('bosque')">
             <div class="emoji">🌿</div>
             <div class="label">Bosque</div>
             <div class="small">Tranquilo, suave y lleno de vida</div>
           </button>
 
-          <button class="choice" data-place="cielo">
+          <button class="choice" onclick="choosePlace('cielo')">
             <div class="emoji">🌌</div>
             <div class="label">Cielo nocturno</div>
             <div class="small">Estrellas, calma y una noche bonita</div>
           </button>
 
-          <button class="choice" data-place="calabazas">
+          <button class="choice" onclick="choosePlace('calabazas')">
             <div class="emoji">🎃</div>
             <div class="label">Campo de calabazas</div>
             <div class="small">Porque sé que te gustan mucho</div>
@@ -782,7 +723,6 @@ button:hover{
     </div>
   </div>
 
-  <!-- STORY TEXTS -->
   <div id="t1" class="sceneText"><div class="story-text">En un mundo tranquilo... 🌅</div></div>
   <div id="t2" class="sceneText"><div class="story-text">Lleno de lugares por descubrir... 🌍</div></div>
   <div id="t3" class="sceneText"><div class="story-text">Y de momentos que se sienten especiales... ✨</div></div>
@@ -792,7 +732,7 @@ button:hover{
   <div id="t7" class="sceneText"><div class="story-text">Y cada camino parece más cálido si estás tú.</div></div>
   <div id="t8" class="sceneText"><div class="story-text">Cada lugar nuevo se vuelve un recuerdo. 🌙</div></div>
   <div id="t9" class="sceneText"><div class="story-text">Y hasta las cosas pequeñas importan...</div></div>
-  <div id="t10" class="sceneText"><div class="story-text story-glow" id="specialPlaceLine">Porque este lugar ya se siente nuestro 💜</div></div>
+  <div id="t10" class="sceneText"><div id="specialPlaceLine" class="story-text story-glow">Porque este lugar ya se siente nuestro 💜</div></div>
   <div id="t11" class="sceneText"><div class="story-text">Y en este mundo tan grande...</div></div>
   <div id="t12" class="sceneText"><div class="story-text">Solo hay un lugar donde de verdad quiero estar...</div></div>
   <div id="t13" class="sceneText"><div class="story-text story-glow">Caminando a tu lado.</div></div>
@@ -810,13 +750,11 @@ button:hover{
   <audio id="bgMusic" loop>
     <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
   </audio>
-
 </div>
 
 <script>
 const startScreen = document.getElementById("startScreen");
 const choiceScreen = document.getElementById("choiceScreen");
-const startBtn = document.getElementById("startBtn");
 const bgMusic = document.getElementById("bgMusic");
 const world = document.getElementById("world");
 const decor = document.getElementById("decor");
@@ -825,10 +763,8 @@ const walkScene = document.getElementById("walkScene");
 const man = document.getElementById("man");
 const girl = document.getElementById("girl");
 const specialPlaceLine = document.getElementById("specialPlaceLine");
-
 let storyStarted = false;
 
-/* stars */
 for (let i = 0; i < 130; i++) {
   const s = document.createElement("div");
   s.className = "star";
@@ -841,22 +777,17 @@ for (let i = 0; i < 130; i++) {
   world.appendChild(s);
 }
 
-/* start */
-startBtn.addEventListener("click", async () => {
-  try { await bgMusic.play(); } catch(e) {}
+function startExperience(){
+  bgMusic.play().catch(() => {});
   startScreen.classList.remove("active");
   choiceScreen.classList.add("active");
-});
+}
 
-/* choices */
-document.querySelectorAll(".choice").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const place = btn.dataset.place;
-    choiceScreen.classList.remove("active");
-    setupPlace(place);
-    startStory(place);
-  });
-});
+function choosePlace(place){
+  choiceScreen.classList.remove("active");
+  setupPlace(place);
+  startStory();
+}
 
 function setupPlace(place){
   decor.innerHTML = "";
@@ -876,9 +807,6 @@ function setupPlace(place){
       t.style.right = (5 + i * 12) + "%";
       t.style.transform = `scale(${0.8 + Math.random() * 0.4})`;
       decor.appendChild(t);
-    }
-    for(let i=0;i<14;i++){
-      createFloatingThing("✨");
     }
   }
 
@@ -906,42 +834,34 @@ function setupPlace(place){
       p.appendChild(stem);
       decor.appendChild(p);
     }
-    for(let i=0;i<10;i++){
-      createFloatingThing("🎃");
-    }
   }
 }
 
-/* story */
-function startStory(place){
+function startStory(){
   if(storyStarted) return;
   storyStarted = true;
 
-  showText(1);
+  let current = 1;
+  showText(current);
 
-  /* sunset to night after a bit */
   setTimeout(() => {
     world.classList.add("night");
   }, 4500);
 
-  let current = 1;
-  const total = 15;
   const timer = setInterval(() => {
     hideText(current);
     current++;
-    if(current <= total){
+    if(current <= 15){
       showText(current);
     } else {
       clearInterval(timer);
     }
   }, 3200);
 
-  /* names */
   setTimeout(() => {
     names.classList.add("show");
   }, 7000);
 
-  /* romantic moment */
   setTimeout(() => {
     walkScene.classList.add("kiss-active");
     man.classList.remove("walking");
@@ -958,7 +878,6 @@ function startStory(place){
     }
   }, 8600);
 
-  /* extra ambience */
   setInterval(() => {
     createFloatingThing(Math.random() > 0.5 ? "💜" : "✨");
   }, 500);
@@ -972,7 +891,6 @@ function hideText(n){
   const el = document.getElementById("t" + n);
   if(el) el.classList.remove("active");
 }
-
 function createFloatingThing(symbol){
   const d = document.createElement("div");
   d.className = symbol === "💜" ? "heart" : "spark";
