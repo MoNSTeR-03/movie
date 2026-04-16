@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ryoko 💜</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Scene container */
+.scene {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.active { display: flex; }
+
+/* Text animation */
+.text {
+  font-size: 28px;
+  max-width: 80%;
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Stars */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+  0% {opacity: 0.2;}
+  50% {opacity: 1;}
+  100% {opacity: 0.2;}
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  animation: float 5s linear infinite;
+  font-size: 20px;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); opacity: 1;}
+  to { transform: translateY(-10vh); opacity: 0;}
+}
+
+/* Glow */
+.glow {
+  text-shadow: 0 0 10px pink, 0 0 20px purple;
+}
+
+/* Final text */
+.final {
+  font-size: 40px;
+  color: #ff99ff;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SCENES -->
+
+<div id="s1" class="scene active">
+  <div class="text">In a quiet world... 🌌</div>
+</div>
+
+<div id="s2" class="scene">
+  <div class="text">Full of unknown places... 🌍</div>
+</div>
+
+<div id="s3" class="scene">
+  <div class="text">And endless nature to explore... 🌿</div>
+</div>
+
+<div id="s4" class="scene">
+  <div class="text">Someone appeared... 💜</div>
+</div>
+
+<div id="s5" class="scene">
+  <div class="text glow">Ryoko... 🎃💖</div>
+</div>
+
+<div id="s6" class="scene">
+  <div class="text">With you... even the smallest moment feels like an adventure 🌄</div>
+</div>
+
+<div id="s7" class="scene">
+  <div class="text">Walking through new places...</div>
+</div>
+
+<div id="s8" class="scene">
+  <div class="text">Discovering the world together... ✨</div>
+</div>
+
+<div id="s9" class="scene">
+  <div class="text">Even something simple...</div>
+</div>
+
+<div id="s10" class="scene">
+  <div class="text glow">Like pumpkins... 🎃💜</div>
+</div>
+
+<div id="s11" class="scene">
+  <div class="text">Feels special... because it's with you</div>
+</div>
+
+<div id="s12" class="scene">
+  <div class="text">And in all this world...</div>
+</div>
+
+<div id="s13" class="scene">
+  <div class="text">There is only one place I want to be...</div>
+</div>
+
+<div id="s14" class="scene">
+  <div class="text glow">Next to you</div>
+</div>
+
+<div id="s15" class="scene">
+  <div class="final glow">
+    Ryoko... 💜<br><br>
+    It's me... Ahmad 🖤<br><br>
+    And I want to discover this world...<br>
+    with you 🥹💖
+  </div>
+</div>
+
+<!-- MUSIC -->
+<audio autoplay>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+</audio>
+
+<script>
+
+/* Scene control */
+let current = 1;
+let total = 15;
+
+function nextScene() {
+  document.getElementById("s" + current).classList.remove("active");
+  current++;
+  if(current <= total){
+    document.getElementById("s" + current).classList.add("active");
+  }
+}
+
+setInterval(nextScene, 3000);
+
+/* Stars */
+for(let i=0;i<100;i++){
+  let s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  document.body.appendChild(s);
+}
+
+/* Hearts */
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💜";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},300);
+
+</script>
+
+</body>
+</html>
