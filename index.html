@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -14,7 +14,7 @@ body {
   margin: 0;
   background: radial-gradient(circle at top, #25103a 0%, #090111 45%, #000 100%);
   color: white;
-  font-family: 'Courier New', monospace;
+  font-family: 'Trebuchet MS', 'Courier New', monospace;
   overflow: hidden;
   text-align: center;
 }
@@ -28,7 +28,7 @@ body {
     linear-gradient(to bottom, #2b1142 0%, #16081f 35%, #090111 65%, #000 100%);
 }
 
-/* Stars */
+/* Estrellas */
 .star {
   position: absolute;
   border-radius: 50%;
@@ -41,11 +41,11 @@ body {
   50% { opacity: 1; transform: scale(1.4); }
 }
 
-/* Moon */
+/* Luna */
 .moon {
   position: absolute;
-  top: 60px;
-  right: 110px;
+  top: 55px;
+  right: 100px;
   width: 110px;
   height: 110px;
   border-radius: 50%;
@@ -55,7 +55,7 @@ body {
     0 0 70px rgba(220, 118, 255, 0.25);
 }
 
-/* Mountains */
+/* Montañas */
 .mountain {
   position: absolute;
   bottom: 140px;
@@ -72,7 +72,7 @@ body {
 .m3 { right: 180px; bottom: 145px; border-bottom-color: rgba(30, 15, 45, 0.95); }
 .m4 { right: -90px; bottom: 155px; transform: scale(1.2); }
 
-/* Trees */
+/* Árboles */
 .tree {
   position: absolute;
   bottom: 120px;
@@ -109,7 +109,7 @@ body {
 .t3 { right: 14%; }
 .t4 { right: 5%; transform: scale(0.9); }
 
-/* Ground */
+/* Suelo */
 .ground {
   position: absolute;
   left: 0;
@@ -128,7 +128,7 @@ body {
   border-top: 2px solid rgba(255, 130, 220, 0.15);
 }
 
-/* Path */
+/* Camino */
 .path {
   position: absolute;
   left: 50%;
@@ -141,7 +141,7 @@ body {
   opacity: 0.9;
 }
 
-/* Pumpkins */
+/* Calabazas */
 .pumpkin {
   position: absolute;
   bottom: 110px;
@@ -185,127 +185,175 @@ body {
 .p3 { right: 18%; }
 .p4 { right: 23%; transform: scale(0.85); }
 
-/* Characters area */
+/* Niebla */
+.mist {
+  position: absolute;
+  left: -10%;
+  bottom: 80px;
+  width: 130%;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 60%);
+  animation: mistMove 18s linear infinite alternate;
+  filter: blur(14px);
+}
+
+@keyframes mistMove {
+  from { transform: translateX(-20px); }
+  to { transform: translateX(20px); }
+}
+
+/* Zona de personajes */
 #walkScene {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 82px;
-  height: 160px;
+  height: 185px;
   pointer-events: none;
+  z-index: 4;
 }
 
-/* Couple */
+/* Pareja */
 .couple {
   position: absolute;
-  left: -180px;
+  left: -220px;
   bottom: 0;
-  width: 170px;
-  height: 140px;
-  animation: walkAcross 24s linear infinite;
+  width: 220px;
+  height: 160px;
+  animation: walkAndStop 12s forwards;
 }
 
-@keyframes walkAcross {
+@keyframes walkAndStop {
   0%   { left: -220px; }
-  100% { left: calc(100vw + 40px); }
+  60%  { left: calc(50% - 110px); }
+  100% { left: calc(50% - 110px); }
 }
 
 .person {
   position: absolute;
   bottom: 0;
-  width: 58px;
-  height: 125px;
+  width: 82px;
+  height: 150px;
+  transition: transform 1.2s ease;
 }
 
-.man { left: 12px; }
-.girl { left: 84px; }
+.man { left: 18px; }
+.girl { left: 118px; }
 
-/* heads */
 .head {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 38px;
   transform: translateX(-50%);
-  border-radius: 50%;
-  background: #0d0611;
-  box-shadow: 0 0 8px rgba(255, 155, 255, 0.12);
+  border-radius: 45% 45% 48% 48%;
+  background: #f0c7ae;
+  box-shadow: 0 0 10px rgba(255, 180, 200, 0.12);
 }
 
-/* body */
+/* pelo */
+.man .head::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 34px;
+  height: 18px;
+  background: #1d0f18;
+  border-radius: 55% 55% 30% 30%;
+}
+
+.girl .head::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -3px;
+  width: 40px;
+  height: 46px;
+  background: #23111e;
+  border-radius: 55% 55% 45% 45%;
+  z-index: -1;
+}
+
+/* cuerpo */
 .bodyShape {
   position: absolute;
-  top: 25px;
+  top: 34px;
   left: 50%;
   transform: translateX(-50%);
-  background: #0d0611;
 }
 
 .man .bodyShape {
-  width: 22px;
-  height: 44px;
+  width: 28px;
+  height: 52px;
+  background: #5d75ff;
   border-radius: 10px 10px 8px 8px;
 }
 
 .girl .bodyShape {
-  width: 26px;
+  width: 28px;
   height: 42px;
-  border-radius: 10px 10px 15px 15px;
+  background: #ff7dcf;
+  border-radius: 12px 12px 10px 10px;
 }
 
 .girl .dress {
   position: absolute;
-  top: 60px;
+  top: 72px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 18px solid transparent;
-  border-right: 18px solid transparent;
-  border-top: 42px solid #0d0611;
+  border-left: 24px solid transparent;
+  border-right: 24px solid transparent;
+  border-top: 50px solid #ff7dcf;
+  filter: drop-shadow(0 0 5px rgba(255, 120, 200, 0.2));
 }
 
-/* arms */
+/* brazos */
 .arm {
   position: absolute;
-  top: 34px;
-  width: 9px;
-  height: 42px;
-  background: #0d0611;
+  top: 46px;
+  width: 10px;
+  height: 44px;
+  background: #f0c7ae;
   border-radius: 10px;
   transform-origin: top center;
-  animation: armSwing 0.7s ease-in-out infinite alternate;
 }
 
-.arm.left  { left: 13px; }
-.arm.right { right: 13px; animation-delay: 0.35s; }
+.walking .arm.left  { animation: armSwing 0.7s ease-in-out infinite alternate; }
+.walking .arm.right { animation: armSwing2 0.7s ease-in-out infinite alternate; }
+
+.arm.left  { left: 16px; }
+.arm.right { right: 16px; }
 
 @keyframes armSwing {
   from { transform: rotate(18deg); }
   to   { transform: rotate(-18deg); }
 }
 
-/* legs */
+@keyframes armSwing2 {
+  from { transform: rotate(-18deg); }
+  to   { transform: rotate(18deg); }
+}
+
+/* piernas */
 .leg {
   position: absolute;
   bottom: 0;
-  width: 9px;
-  height: 52px;
-  background: #0d0611;
+  width: 10px;
+  height: 56px;
+  background: #1a1021;
   border-radius: 10px;
   transform-origin: top center;
 }
 
-.person .leg.left {
-  left: 18px;
-  animation: legLeft 0.7s ease-in-out infinite alternate;
-}
+.person .leg.left  { left: 24px; }
+.person .leg.right { right: 24px; }
 
-.person .leg.right {
-  right: 18px;
-  animation: legRight 0.7s ease-in-out infinite alternate;
-}
+.walking .leg.left  { animation: legLeft 0.7s ease-in-out infinite alternate; }
+.walking .leg.right { animation: legRight 0.7s ease-in-out infinite alternate; }
 
 @keyframes legLeft {
   from { transform: rotate(22deg); }
@@ -317,32 +365,92 @@ body {
   to   { transform: rotate(22deg); }
 }
 
-/* hold hands */
+/* manos unidas */
 .hand-link {
   position: absolute;
-  left: 68px;
-  top: 65px;
-  width: 24px;
-  height: 4px;
-  background: rgba(255, 150, 220, 0.8);
+  left: 92px;
+  top: 78px;
+  width: 34px;
+  height: 5px;
+  background: rgba(255, 198, 220, 0.95);
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 140, 220, 0.45);
+  box-shadow: 0 0 12px rgba(255, 140, 220, 0.45);
 }
 
-/* floating hearts */
-.heart {
+/* nombres */
+.names {
   position: absolute;
-  font-size: 18px;
-  animation: float 5s linear forwards;
-  opacity: 0.9;
+  left: 50%;
+  bottom: 154px;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffb8f2;
+  text-shadow:
+    0 0 10px rgba(255, 150, 230, 0.8),
+    0 0 22px rgba(180, 80, 255, 0.45);
+  opacity: 0;
+  animation: showNames 2s forwards;
+  animation-delay: 7s;
 }
 
-@keyframes float {
-  from { transform: translateY(0) scale(1); opacity: 0.95; }
-  to   { transform: translateY(-180px) scale(1.4); opacity: 0; }
+@keyframes showNames {
+  to { opacity: 1; }
 }
 
-/* text scenes */
+/* momento romántico */
+.kiss-glow {
+  position: absolute;
+  left: 50%;
+  bottom: 82px;
+  width: 90px;
+  height: 90px;
+  transform: translateX(-50%) scale(0.4);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,170,230,0.55), rgba(255,120,210,0.18), transparent 70%);
+  filter: blur(4px);
+  opacity: 0;
+}
+
+.kiss-active .kiss-glow {
+  animation: kissGlow 2.5s forwards;
+}
+
+@keyframes kissGlow {
+  0%   { opacity: 0; transform: translateX(-50%) scale(0.3); }
+  40%  { opacity: 1; transform: translateX(-50%) scale(1); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1.5); }
+}
+
+.kiss-effect {
+  position: absolute;
+  left: 50%;
+  bottom: 116px;
+  transform: translateX(-50%);
+  font-size: 28px;
+  opacity: 0;
+}
+
+.kiss-active .kiss-effect {
+  animation: kissPop 2s forwards;
+}
+
+@keyframes kissPop {
+  0%   { opacity: 0; transform: translateX(-50%) scale(0.4); }
+  35%  { opacity: 1; transform: translateX(-50%) scale(1.25); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1.8); }
+}
+
+/* girar uno hacia el otro */
+.kiss-active .man {
+  transform: translateX(20px) rotate(4deg);
+}
+
+.kiss-active .girl {
+  transform: translateX(-18px) rotate(-4deg);
+}
+
+/* textos */
 .scene {
   position: absolute;
   inset: 0;
@@ -377,11 +485,16 @@ body {
 
 .final {
   font-size: clamp(28px, 3.4vw, 48px);
-  line-height: 1.5;
+  line-height: 1.45;
   color: #ffb3f4;
   text-shadow:
     0 0 10px rgba(255, 155, 240, 0.9),
     0 0 28px rgba(191, 86, 255, 0.45);
+}
+
+.small {
+  font-size: clamp(18px, 2vw, 24px);
+  opacity: 0.92;
 }
 
 @keyframes fadeText {
@@ -391,26 +504,36 @@ body {
   }
 }
 
-.small {
-  font-size: clamp(18px, 2vw, 24px);
+/* corazones flotantes */
+.heart {
+  position: absolute;
+  font-size: 18px;
+  animation: float 5s linear forwards;
   opacity: 0.9;
 }
 
-/* soft mist */
-.mist {
-  position: absolute;
-  left: -10%;
-  bottom: 80px;
-  width: 130%;
-  height: 120px;
-  background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 60%);
-  animation: mistMove 18s linear infinite alternate;
-  filter: blur(14px);
+@keyframes float {
+  from { transform: translateY(0) scale(1); opacity: 0.95; }
+  to   { transform: translateY(-180px) scale(1.4); opacity: 0; }
 }
 
-@keyframes mistMove {
-  from { transform: translateX(-20px); }
-  to { transform: translateX(20px); }
+@media (max-width: 768px) {
+  .moon {
+    width: 85px;
+    height: 85px;
+    right: 35px;
+    top: 35px;
+  }
+
+  .names {
+    font-size: 19px;
+    bottom: 150px;
+  }
+
+  .couple {
+    transform: scale(0.9);
+    transform-origin: bottom left;
+  }
 }
 </style>
 </head>
@@ -439,8 +562,8 @@ body {
   <div class="ground"></div>
 
   <div id="walkScene">
-    <div class="couple">
-      <div class="person man">
+    <div id="couple" class="couple">
+      <div id="man" class="person man walking">
         <div class="head"></div>
         <div class="bodyShape"></div>
         <div class="arm left"></div>
@@ -451,7 +574,7 @@ body {
 
       <div class="hand-link"></div>
 
-      <div class="person girl">
+      <div id="girl" class="person girl walking">
         <div class="head"></div>
         <div class="bodyShape"></div>
         <div class="dress"></div>
@@ -461,23 +584,27 @@ body {
         <div class="leg right"></div>
       </div>
     </div>
+
+    <div class="names">Ahmad 💜 Ryoko</div>
+    <div class="kiss-glow"></div>
+    <div class="kiss-effect">💜✨💜</div>
   </div>
 </div>
 
 <div id="s1" class="scene active">
-  <div class="text">In a quiet world... 🌌</div>
+  <div class="text">En un mundo tranquilo... 🌌</div>
 </div>
 
 <div id="s2" class="scene">
-  <div class="text">Full of unknown places... 🌍</div>
+  <div class="text">Lleno de lugares desconocidos... 🌍</div>
 </div>
 
 <div id="s3" class="scene">
-  <div class="text">And endless nature to explore... 🌿</div>
+  <div class="text">Y de naturaleza infinita por descubrir... 🌿</div>
 </div>
 
 <div id="s4" class="scene">
-  <div class="text">Then two souls began to walk together...</div>
+  <div class="text">Dos almas empezaron a caminar juntas...</div>
 </div>
 
 <div id="s5" class="scene">
@@ -485,64 +612,65 @@ body {
 </div>
 
 <div id="s6" class="scene">
-  <div class="text">With you, even silence feels beautiful.</div>
+  <div class="text">Contigo, hasta el silencio se siente bonito.</div>
 </div>
 
 <div id="s7" class="scene">
-  <div class="text">Every road feels softer when you’re there.</div>
+  <div class="text">Cada camino se vuelve más suave si estás tú.</div>
 </div>
 
 <div id="s8" class="scene">
-  <div class="text">Every new place becomes a memory. ✨</div>
+  <div class="text">Cada lugar nuevo se convierte en un recuerdo. ✨</div>
 </div>
 
 <div id="s9" class="scene">
-  <div class="text">And even the little things matter...</div>
+  <div class="text">Y hasta las cosas más pequeñas importan...</div>
 </div>
 
 <div id="s10" class="scene">
-  <div class="text glow">Like pumpkins... 🎃💜</div>
+  <div class="text glow">Como las calabazas... 🎃💜</div>
 </div>
 
 <div id="s11" class="scene">
-  <div class="text">Because they remind me of your smile.</div>
+  <div class="text">Porque me hacen pensar en tu sonrisa.</div>
 </div>
 
 <div id="s12" class="scene">
-  <div class="text">And in this huge world...</div>
+  <div class="text">Y en este mundo tan grande...</div>
 </div>
 
 <div id="s13" class="scene">
-  <div class="text">There is only one place I truly want to be...</div>
+  <div class="text">Solo hay un lugar donde de verdad quiero estar...</div>
 </div>
 
 <div id="s14" class="scene">
-  <div class="text glow">Walking beside you.</div>
+  <div class="text glow">Caminando a tu lado.</div>
 </div>
 
 <div id="s15" class="scene">
   <div class="final">
     Ryoko... 💜<br><br>
-    It's me... Ahmad 🖤<br><br>
-    I want to keep discovering<br>
-    this world with you.<br><br>
-    <span class="small">Step by step. Place by place. Heart by heart.</span>
+    Soy yo... Ahmad 🖤<br><br>
+    Quiero seguir descubriendo<br>
+    este mundo contigo.<br><br>
+    <span class="small">Paso a paso. Lugar por lugar. Corazón con corazón.</span>
   </div>
 </div>
 
 <audio autoplay loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-/* Scene timing */
 let current = 1;
 const total = 15;
 
 function nextScene() {
   const prev = document.getElementById("s" + current);
   if (prev) prev.classList.remove("active");
+
   current++;
+
   if (current <= total) {
     const next = document.getElementById("s" + current);
     if (next) next.classList.add("active");
@@ -554,7 +682,7 @@ function nextScene() {
 
 setInterval(nextScene, 3200);
 
-/* stars */
+/* estrellas */
 for (let i = 0; i < 120; i++) {
   const s = document.createElement("div");
   s.className = "star";
@@ -567,7 +695,7 @@ for (let i = 0; i < 120; i++) {
   document.getElementById("world").appendChild(s);
 }
 
-/* floating hearts */
+/* corazones flotantes */
 setInterval(() => {
   const h = document.createElement("div");
   h.className = "heart";
@@ -578,6 +706,24 @@ setInterval(() => {
   document.getElementById("world").appendChild(h);
   setTimeout(() => h.remove(), 5000);
 }, 450);
+
+/* momento romántico */
+setTimeout(() => {
+  document.getElementById("walkScene").classList.add("kiss-active");
+  document.getElementById("man").classList.remove("walking");
+  document.getElementById("girl").classList.remove("walking");
+
+  for (let i = 0; i < 24; i++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = Math.random() > 0.3 ? "💜" : "✨";
+    h.style.left = (48 + Math.random() * 4) + "vw";
+    h.style.bottom = (100 + Math.random() * 30) + "px";
+    h.style.fontSize = (Math.random() * 18 + 18) + "px";
+    document.getElementById("world").appendChild(h);
+    setTimeout(() => h.remove(), 4200);
+  }
+}, 8200);
 </script>
 
 </body>
