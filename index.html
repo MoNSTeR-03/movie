@@ -2,48 +2,68 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Ahmad 💜 Ryoko</title>
 
 <style>
 * { box-sizing: border-box; }
 
+:root{
+  --pink:#ff8fd8;
+  --pink2:#ffb8ef;
+  --violet:#9b5cff;
+  --skin:#f6d2bd;
+  --hair:#23111e;
+  --night1:#2a103d;
+  --night2:#16081f;
+  --night3:#000;
+}
+
+html, body{
+  width:100%;
+  height:100%;
+}
+
 body{
   margin:0;
   overflow:hidden;
-  font-family:'Trebuchet MS',sans-serif;
+  font-family:'Trebuchet MS', system-ui, sans-serif;
   background:black;
   color:white;
+  touch-action:manipulation;
 }
 
 #world{
   position:fixed;
   inset:0;
-  background:linear-gradient(to bottom,#ffb6c9 0%,#d87bd6 38%,#43204a 70%,#150813 100%);
   overflow:hidden;
-  transition:3s;
+  background:linear-gradient(to bottom,#ffb6c9 0%,#d87bd6 38%,#43204a 70%,#150813 100%);
+  transition:background 2.5s ease, filter 1.2s ease;
 }
 
 #world.night{
-  background:linear-gradient(to bottom,#2a103d 0%,#16081f 45%,#000 100%);
+  background:linear-gradient(to bottom,var(--night1) 0%,var(--night2) 45%,var(--night3) 100%);
 }
 
+#world.cinematic{
+  filter: blur(4px) brightness(.72) saturate(1.05);
+}
+
+/* moon and stars */
 .moon{
   position:absolute;
-  top:55px;
-  right:90px;
-  width:110px;
-  height:110px;
+  top:clamp(18px, 4vw, 55px);
+  right:clamp(18px, 4vw, 90px);
+  width:clamp(72px, 12vw, 110px);
+  height:clamp(72px, 12vw, 110px);
   border-radius:50%;
   background:radial-gradient(circle at 35% 35%, #fffdf3, #ffe4f6 65%, #c785ff 100%);
   box-shadow:0 0 30px rgba(255,220,245,.7), 0 0 80px rgba(215,130,255,.28);
   opacity:0;
   transition:2s;
+  z-index:2;
 }
-
-#world.night .moon{
-  opacity:1;
-}
+#world.night .moon{ opacity:1; }
 
 .star{
   position:absolute;
@@ -54,35 +74,34 @@ body{
   opacity:0;
   animation:twinkle 3s infinite ease-in-out;
 }
-
-#world.night .star{
-  opacity:1;
-}
+#world.night .star{ opacity:1; }
 
 @keyframes twinkle{
   0%,100%{transform:scale(1); opacity:.2;}
   50%{transform:scale(1.5); opacity:1;}
 }
 
+/* mountains */
 .mountain{
   position:absolute;
-  bottom:140px;
+  bottom:118px;
   width:0;
   height:0;
-  border-left:220px solid transparent;
-  border-right:220px solid transparent;
-  border-bottom:260px solid rgba(42, 17, 55, .95);
+  border-left:clamp(100px, 18vw, 220px) solid transparent;
+  border-right:clamp(100px, 18vw, 220px) solid transparent;
+  border-bottom:clamp(120px, 22vw, 260px) solid rgba(42,17,55,.95);
   filter:drop-shadow(0 0 8px rgba(180,80,255,.18));
 }
-.m1{ left:-80px; transform:scale(1.1); }
-.m2{ left:200px; border-bottom-color:rgba(58,26,70,.95); }
-.m3{ right:180px; border-bottom-color:rgba(36,15,48,.95); }
-.m4{ right:-90px; transform:scale(1.15); }
+.m1{ left:-60px; transform:scale(1.05); }
+.m2{ left:18vw; border-bottom-color:rgba(58,26,70,.95); }
+.m3{ right:16vw; border-bottom-color:rgba(36,15,48,.95); }
+.m4{ right:-70px; transform:scale(1.1); }
 
+/* ground */
 .ground{
   position:absolute;
   bottom:0;
-  height:150px;
+  height:clamp(120px, 18vh, 150px);
   width:100%;
   background:
     linear-gradient(to bottom, rgba(90,35,50,.2), rgba(12,5,14,.95)),
@@ -101,8 +120,8 @@ body{
   left:50%;
   bottom:0;
   transform:translateX(-50%);
-  width:440px;
-  height:170px;
+  width:min(86vw, 440px);
+  height:clamp(130px, 20vh, 170px);
   background:linear-gradient(to bottom, rgba(255,210,225,.07), rgba(25,10,20,.7));
   clip-path:polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
 }
@@ -122,11 +141,17 @@ body{
   to{transform:translateX(20px);}
 }
 
-/* Pumpkins */
+/* pumpkins */
+#pumpkinField{
+  position:absolute;
+  inset:0;
+  z-index:3;
+}
+
 .pumpkin{
   position:absolute;
-  width:42px;
-  height:30px;
+  width:clamp(22px, 4.8vw, 42px);
+  height:clamp(16px, 3.5vw, 30px);
   background:#ff8a1d;
   border-radius:48% 48% 42% 42%;
   box-shadow:
@@ -139,72 +164,73 @@ body{
   content:"";
   position:absolute;
   top:2px;
-  width:10px;
-  height:24px;
+  width:22%;
+  height:78%;
   border-radius:45%;
   background:rgba(255,130,20,.94);
 }
-.pumpkin::before{ left:6px; }
-.pumpkin::after{ right:6px; }
+.pumpkin::before{ left:14%; }
+.pumpkin::after{ right:14%; }
 .pumpkin span{
   position:absolute;
   top:-8px;
   left:50%;
-  width:5px;
-  height:10px;
+  width:4px;
+  height:9px;
   background:#5d8f2a;
   transform:translateX(-50%);
   border-radius:3px;
 }
 
-/* Floating hearts */
+/* floating effects */
 .heart,
 .spark{
   position:absolute;
-  animation:float 5s linear forwards;
+  animation:float 4.8s linear forwards;
   opacity:.95;
+  z-index:30;
+  user-select:none;
+  pointer-events:none;
 }
-
 @keyframes float{
   from{transform:translateY(0) scale(1);}
-  to{transform:translateY(-200px) scale(1.45);opacity:0;}
+  to{transform:translateY(-180px) scale(1.45);opacity:0;}
 }
 
-/* Start screen */
+/* start */
 .screen{
   position:absolute;
   inset:0;
   display:none;
   justify-content:center;
   align-items:center;
-  z-index:50;
+  z-index:60;
+  padding:18px;
 }
-
-.screen.active{
-  display:flex;
-}
+.screen.active{ display:flex; }
 
 .card{
-  background:rgba(8,4,16,.52);
+  background:rgba(8,4,16,.56);
   border:1px solid rgba(255,190,230,.18);
   box-shadow:0 0 30px rgba(180,85,255,.18);
   border-radius:24px;
-  padding:32px;
+  padding:clamp(20px, 4vw, 32px);
   width:min(92%, 700px);
   text-align:center;
-  backdrop-filter:blur(8px);
+  backdrop-filter:blur(10px);
 }
 
 .card h2{
-  font-size:clamp(30px,5vw,58px);
+  font-size:clamp(26px, 7vw, 58px);
   margin:0 0 12px;
   color:#ffb7ef;
   text-shadow:0 0 12px rgba(255,145,230,.85), 0 0 28px rgba(174,84,255,.35);
 }
 
 .card p{
-  font-size:clamp(16px,2.2vw,24px);
+  font-size:clamp(15px, 4vw, 24px);
   opacity:.95;
+  line-height:1.5;
 }
 
 button{
@@ -219,18 +245,38 @@ button{
   box-shadow:0 0 18px rgba(255,133,214,.35);
 }
 
-/* Story text */
+/* hints */
+#tapHint,
+#swipeHint{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(8,4,16,.45);
+  border:1px solid rgba(255,190,230,.15);
+  border-radius:999px;
+  padding:8px 14px;
+  font-size:clamp(11px, 2.8vw, 14px);
+  color:#ffd9f4;
+  z-index:45;
+  backdrop-filter:blur(8px);
+  opacity:.92;
+}
+#tapHint{ bottom:18px; }
+#swipeHint{ top:18px; }
+
+/* story text */
 #text{
   position:absolute;
-  top:62px;
+  top:max(20px, env(safe-area-inset-top));
   width:100%;
   text-align:center;
-  padding:0 20px;
-  font-size:clamp(24px,3.2vw,42px);
+  padding:0 16px;
+  font-size:clamp(18px, 5vw, 42px);
+  line-height:1.35;
   color:white;
   text-shadow:0 0 12px rgba(255,150,245,.26);
-  z-index:20;
-  min-height:70px;
+  z-index:25;
+  min-height:68px;
   transition:opacity .8s ease, transform .8s ease;
 }
 
@@ -251,13 +297,14 @@ button{
     0 0 30px rgba(180,86,255,.38);
 }
 
-/* Walk scene */
+/* walk scene */
 #walkScene{
   position:absolute;
-  bottom:78px;
+  bottom:max(58px, env(safe-area-inset-bottom));
   width:100%;
-  height:210px;
-  z-index:15;
+  height:min(34vh, 210px);
+  min-height:160px;
+  z-index:20;
   pointer-events:none;
 }
 
@@ -306,12 +353,12 @@ button{
   transform:translateX(-50%);
   width:40px;
   height:46px;
-  background:#f6d2bd;
+  background:var(--skin);
   border-radius:46% 46% 50% 50%;
   box-shadow:0 0 10px rgba(255,200,210,.1);
 }
 
-/* Boy hair */
+/* boy hair */
 .man .head::before{
   content:"";
   position:absolute;
@@ -323,7 +370,7 @@ button{
   border-radius:60% 60% 28% 28%;
 }
 
-/* Girl hair */
+/* girl hair */
 .girl .head::before{
   content:"";
   position:absolute;
@@ -331,10 +378,9 @@ button{
   left:-5px;
   width:50px;
   height:24px;
-  background:#23111e;
+  background:var(--hair);
   border-radius:65% 65% 35% 35%;
 }
-
 .girl .head::after{
   content:"";
   position:absolute;
@@ -342,9 +388,9 @@ button{
   left:-4px;
   width:9px;
   height:24px;
-  background:#23111e;
+  background:var(--hair);
   border-radius:10px;
-  box-shadow:39px 0 0 #23111e;
+  box-shadow:39px 0 0 var(--hair);
 }
 
 .eye{
@@ -407,7 +453,7 @@ button{
   top:52px;
   width:10px;
   height:48px;
-  background:#f6d2bd;
+  background:var(--skin);
   border-radius:10px;
   transform-origin:top center;
 }
@@ -459,7 +505,7 @@ button{
   box-shadow:0 0 12px rgba(255,140,220,.45);
 }
 
-/* Romantic moment */
+/* romantic moment */
 .kiss-glow{
   position:absolute;
   left:50%;
@@ -510,63 +556,112 @@ button{
   100%{ opacity:0; transform:translateX(-50%) scale(1.85); }
 }
 
-/* Final poem */
+/* poem */
 #poemBox{
   position:absolute;
   inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px;
-  z-index:40;
+  padding:18px;
+  z-index:55;
   opacity:0;
   pointer-events:none;
-  transition:opacity 2s ease;
+  transition:opacity 1.6s ease;
 }
 
 #poemBox.show{
   opacity:1;
+  pointer-events:auto;
 }
 
 .poemCard{
-  width:min(92%, 820px);
-  background:rgba(8,4,16,.55);
+  width:min(94%, 820px);
+  max-height:min(82vh, 760px);
+  overflow:auto;
+  background:rgba(8,4,16,.58);
   border:1px solid rgba(255,190,230,.18);
   box-shadow:0 0 35px rgba(180,85,255,.2);
   border-radius:24px;
-  padding:28px;
-  backdrop-filter:blur(8px);
+  padding:22px;
+  backdrop-filter:blur(14px);
 }
 
 .poemTitle{
-  font-size:clamp(30px,4vw,52px);
+  font-size:clamp(26px, 6vw, 52px);
   color:#ffb7ef;
   margin-bottom:14px;
   text-shadow:0 0 12px rgba(255,145,230,.85), 0 0 28px rgba(174,84,255,.35);
 }
 
 .poemText{
-  font-size:clamp(18px,2vw,26px);
-  line-height:1.8;
+  font-size:clamp(16px, 4vw, 26px);
+  line-height:1.75;
   color:#ffd9f5;
   text-shadow:0 0 10px rgba(255,160,240,.18);
 }
 
+#poemPages{
+  position:absolute;
+  bottom:14px;
+  right:14px;
+  z-index:57;
+  font-size:12px;
+  color:#ffd8f4;
+  background:rgba(8,4,16,.48);
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,190,230,.14);
+}
+
+/* responsive */
 @media (max-width: 768px){
   .moon{
-    right:28px;
-    top:30px;
-    width:84px;
-    height:84px;
+    right:18px;
+    top:18px;
+    width:72px;
+    height:72px;
   }
 
   .couple{
-    transform:scale(.9);
+    transform:scale(.72);
     transform-origin:bottom left;
   }
 
+  @keyframes walkAndStop{
+    0%{ left:-200px; }
+    60%{ left:calc(50% - 90px); }
+    100%{ left:calc(50% - 90px); }
+  }
+
   .nameTag{
-    font-size:14px;
+    font-size:12px;
+    top:-18px;
+  }
+
+  #text{
+    font-size:20px;
+    top:max(12px, env(safe-area-inset-top));
+    padding:0 14px;
+    min-height:58px;
+  }
+
+  #walkScene{
+    height:25vh;
+    min-height:160px;
+    bottom:max(46px, env(safe-area-inset-bottom));
+  }
+
+  .mountain{
+    opacity:.9;
+  }
+
+  .poemCard{
+    padding:18px;
+  }
+
+  .poemText{
+    line-height:1.65;
   }
 }
 </style>
@@ -588,6 +683,9 @@ button{
   <div id="pumpkinField"></div>
 
   <div id="text" class="showText"></div>
+
+  <div id="swipeHint">Desliza ↔ para cambiar el poema</div>
+  <div id="tapHint">Toca la pantalla para crear corazones 💜</div>
 
   <div id="walkScene">
     <div class="couple">
@@ -632,25 +730,9 @@ button{
   <div id="poemBox">
     <div class="poemCard">
       <div class="poemTitle">Para Ryoko 💜</div>
-      <div class="poemText">
-        En este mundo de calabazas y cielos en calma,<br>
-        encontré en ti una luz que abraza mi alma.<br><br>
-
-        Si el camino es largo, quiero recorrerlo contigo,<br>
-        con tu nombre en mi pecho y tu paz como abrigo.<br><br>
-
-        Eres la ternura que vuelve bonito el paisaje,<br>
-        la razón por la que cada paso se siente viaje.<br><br>
-
-        Y si la noche cae, y todo queda en silencio,<br>
-        quiero seguir a tu lado, amándote despacio y sin miedo al tiempo.<br><br>
-
-        Porque entre mil lugares, uno siempre será mi destino:<br>
-        tú, Ryoko... conmigo.<br><br>
-
-        <strong>Con amor, Ahmad 🖤</strong>
-      </div>
+      <div id="poemText" class="poemText"></div>
     </div>
+    <div id="poemPages">1 / 3</div>
   </div>
 </div>
 
@@ -675,6 +757,8 @@ const poemBox = document.getElementById("poemBox");
 const walkScene = document.getElementById("walkScene");
 const man = document.getElementById("man");
 const girl = document.getElementById("girl");
+const poemText = document.getElementById("poemText");
+const poemPages = document.getElementById("poemPages");
 
 const messages = [
   "En un mundo lleno de calabazas... 🎃",
@@ -687,23 +771,50 @@ const messages = [
   "mi lugar favorito siempre será contigo."
 ];
 
+const poems = [
+`En este mundo de calabazas y cielos en calma,<br>
+encontré en ti una luz que abraza mi alma.<br><br>
+Si el camino es largo, quiero recorrerlo contigo,<br>
+con tu nombre en mi pecho y tu paz como abrigo.<br><br>
+Eres la ternura que vuelve bonito el paisaje,<br>
+la razón por la que cada paso se siente viaje.`,
+
+`Y si la noche cae, y todo queda en silencio,<br>
+quiero seguir a tu lado, amándote despacio y sin miedo al tiempo.<br><br>
+Porque en cada rincón donde miro tu nombre,<br>
+todo se vuelve más dulce, más suave, más inmenso.<br><br>
+Tú haces que el mundo parezca más bonito,<br>
+como si hasta el aire supiera que existes.`,
+
+`Porque entre mil lugares, uno siempre será mi destino:<br>
+tú, Ryoko... conmigo.<br><br>
+Si mañana llega, quiero vivirlo contigo.<br>
+Si la noche cae, quiero soñarla contigo.<br>
+Y si el corazón habla, siempre dirá lo mismo:<br><br>
+<strong>te elegiría a ti, una y otra vez.</strong><br><br>
+<strong>Con amor, Ahmad 🖤</strong>`
+];
+
 let i = 0;
+let poemIndex = 0;
+let poemVisible = false;
+let heartSpawnerStarted = false;
 
 /* pumpkins */
-for(let n = 0; n < 30; n++){
-  let p = document.createElement("div");
+for(let n = 0; n < 34; n++){
+  const p = document.createElement("div");
   p.className = "pumpkin";
   p.style.left = Math.random() * 100 + "%";
-  p.style.bottom = (88 + Math.random() * 42) + "px";
-  p.style.transform = `scale(${0.8 + Math.random() * 0.7})`;
-  let stem = document.createElement("span");
+  p.style.bottom = (78 + Math.random() * 50) + "px";
+  p.style.transform = `scale(${0.7 + Math.random() * 0.9})`;
+  const stem = document.createElement("span");
   p.appendChild(stem);
   pumpkinField.appendChild(p);
 }
 
 /* stars */
 for(let s = 0; s < 110; s++){
-  let st = document.createElement("div");
+  const st = document.createElement("div");
   st.className = "star";
   st.style.left = Math.random() * 100 + "vw";
   st.style.top = Math.random() * 70 + "vh";
@@ -719,10 +830,11 @@ function start(){
 
 function showText(msg, glow = false){
   text.classList.remove("showText");
+  text.classList.add("fadeText");
   setTimeout(() => {
     text.innerHTML = msg;
     text.className = glow ? "showText glowText" : "showText";
-  }, 250);
+  }, 220);
 }
 
 function startStory(){
@@ -748,32 +860,109 @@ function startStory(){
     man.classList.remove("walking");
     girl.classList.remove("walking");
 
+    if (navigator.vibrate) {
+      navigator.vibrate([120, 80, 180]);
+    }
+
     for(let h = 0; h < 28; h++){
-      let heart = document.createElement("div");
-      heart.className = Math.random() > 0.35 ? "heart" : "spark";
-      heart.innerHTML = Math.random() > 0.35 ? "💜" : "✨";
-      heart.style.left = (47 + Math.random() * 6) + "vw";
-      heart.style.bottom = (100 + Math.random() * 30) + "px";
-      heart.style.fontSize = (16 + Math.random() * 18) + "px";
-      world.appendChild(heart);
-      setTimeout(() => heart.remove(), 4200);
+      spawnAt(
+        (window.innerWidth * (0.47 + Math.random() * 0.06)),
+        window.innerHeight - (100 + Math.random() * 30),
+        Math.random() > 0.35 ? "💜" : "✨",
+        16 + Math.random() * 18
+      );
     }
   }, 8500);
 
-  setInterval(() => {
-    let thing = document.createElement("div");
-    thing.className = Math.random() > 0.5 ? "heart" : "spark";
-    thing.innerHTML = Math.random() > 0.5 ? "💜" : "✨";
-    thing.style.left = (20 + Math.random() * 60) + "vw";
-    thing.style.bottom = (80 + Math.random() * 70) + "px";
-    thing.style.fontSize = (14 + Math.random() * 14) + "px";
-    world.appendChild(thing);
-    setTimeout(() => thing.remove(), 5000);
-  }, 500);
-
   setTimeout(() => {
+    poemVisible = true;
+    world.classList.add("cinematic");
     poemBox.classList.add("show");
+    renderPoem();
   }, 18500);
+
+  if (!heartSpawnerStarted) {
+    heartSpawnerStarted = true;
+    setInterval(() => {
+      const symbol = Math.random() > 0.5 ? "💜" : "✨";
+      spawnAt(
+        window.innerWidth * (0.2 + Math.random() * 0.6),
+        window.innerHeight - (80 + Math.random() * 70),
+        symbol,
+        14 + Math.random() * 14
+      );
+    }, 550);
+  }
+}
+
+/* tap hearts anywhere */
+document.addEventListener("pointerdown", (e) => {
+  const isButton = e.target.tagName === "BUTTON";
+  if (isButton) return;
+
+  for(let k = 0; k < 7; k++){
+    spawnAt(
+      e.clientX + (Math.random() * 30 - 15),
+      e.clientY + (Math.random() * 20 - 10),
+      "💜",
+      14 + Math.random() * 10
+    );
+  }
+});
+
+/* swipe poem pages */
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].clientX;
+}, {passive:true});
+
+document.addEventListener("touchend", (e) => {
+  touchEndX = e.changedTouches[0].clientX;
+  handleSwipe();
+}, {passive:true});
+
+function handleSwipe(){
+  if(!poemVisible) return;
+  const diff = touchEndX - touchStartX;
+  if(Math.abs(diff) < 40) return;
+
+  if(diff < 0){
+    poemIndex = Math.min(poemIndex + 1, poems.length - 1);
+  } else {
+    poemIndex = Math.max(poemIndex - 1, 0);
+  }
+  renderPoem();
+}
+
+/* arrow keys also */
+document.addEventListener("keydown", (e) => {
+  if(!poemVisible) return;
+  if(e.key === "ArrowRight"){
+    poemIndex = Math.min(poemIndex + 1, poems.length - 1);
+    renderPoem();
+  }
+  if(e.key === "ArrowLeft"){
+    poemIndex = Math.max(poemIndex - 1, 0);
+    renderPoem();
+  }
+});
+
+function renderPoem(){
+  poemText.innerHTML = poems[poemIndex];
+  poemPages.textContent = `${poemIndex + 1} / ${poems.length}`;
+}
+
+function spawnAt(x, y, symbol, size){
+  const thing = document.createElement("div");
+  thing.className = symbol === "💜" ? "heart" : "spark";
+  thing.innerHTML = symbol;
+  thing.style.left = x + "px";
+  thing.style.top = y + "px";
+  thing.style.fontSize = size + "px";
+  world.appendChild(thing);
+  setTimeout(() => thing.remove(), 5000);
 }
 </script>
 
