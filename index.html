@@ -14,32 +14,41 @@ body{
   color:white;
 }
 
-/* WORLD */
+/* world */
 #world{
   position:fixed;
   inset:0;
-  background:linear-gradient(#ffb6c9,#6a2a7a,#000);
+  background:linear-gradient(#ffb6c9,#43204a,#000);
   transition:2s;
 }
 
 #world.night{
-  background:linear-gradient(#1e0a2e,#000);
+  background:linear-gradient(#2a103d,#000);
 }
 
-/* MOON */
-.moon{
+/* pumpkins */
+.pumpkin{
   position:absolute;
-  top:20px;
-  right:20px;
-  width:80px;
-  height:80px;
+  width:30px;
+  height:20px;
+  background:#ff8a1d;
   border-radius:50%;
-  background:white;
-  opacity:0;
 }
-#world.night .moon{opacity:1;}
 
-/* TEXT */
+/* stars */
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  opacity:.5;
+  animation:twinkle 3s infinite;
+}
+@keyframes twinkle{
+  50%{opacity:1;}
+}
+
+/* text */
 #text{
   position:absolute;
   top:20px;
@@ -48,75 +57,7 @@ body{
   font-size:22px;
 }
 
-/* PUMPKINS */
-.pumpkin{
-  position:absolute;
-  width:30px;
-  height:20px;
-  background:orange;
-  border-radius:50%;
-}
-
-/* CHARACTERS */
-#walk{
-  position:absolute;
-  bottom:80px;
-  width:100%;
-}
-
-.char{
-  position:absolute;
-  width:50px;
-  height:100px;
-  background:#fff;
-  border-radius:20px;
-}
-
-#ahmad{
-  left:-60px;
-  animation:walk 10s forwards;
-}
-#ryoko{
-  left:-120px;
-  animation:walk 10s forwards;
-}
-
-@keyframes walk{
-  to{left:45%;}
-}
-
-/* KISS */
-.kiss{
-  position:absolute;
-  bottom:120px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:30px;
-  opacity:0;
-}
-
-/* POEM */
-#poem{
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:20px;
-  opacity:0;
-  transition:1s;
-}
-
-#poem.show{opacity:1;}
-
-.card{
-  background:rgba(0,0,0,0.6);
-  padding:20px;
-  border-radius:20px;
-}
-
-/* HEARTS */
+/* hearts */
 .heart{
   position:absolute;
   animation:float 4s linear forwards;
@@ -125,91 +66,149 @@ body{
   to{transform:translateY(-200px);opacity:0;}
 }
 
+/* couple */
+.couple{
+  position:absolute;
+  bottom:80px;
+  left:-200px;
+  animation:walk 10s forwards;
+}
+
+@keyframes walk{
+  to{left:50%;}
+}
+
+/* poem */
+#poem{
+  position:absolute;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
+
+#poem.show{ display:flex; }
+
+.card{
+  background:rgba(0,0,0,.6);
+  padding:20px;
+  border-radius:20px;
+}
+
+/* button */
+#start{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
 </style>
 </head>
 
 <body>
 
-<div id="world">
-  <div class="moon"></div>
-  <div id="text"></div>
+<div id="world"></div>
 
-  <div id="walk">
-    <div id="ahmad" class="char">A</div>
-    <div id="ryoko" class="char">R</div>
-  </div>
+<button id="start" onclick="start()">Start 💜</button>
 
-  <div id="kiss" class="kiss">💜💋💜</div>
+<div id="text"></div>
 
-  <div id="poem">
-    <div class="card" id="poemText"></div>
+<div class="couple" id="couple">
+  <div>👦 Ahmad 💙</div>
+  <div>👧 Ryoko 💜</div>
+</div>
+
+<div id="poem">
+  <div class="card">
+    <h2>Para Ryoko 💜</h2>
+    <p>
+    En este mundo lleno de sueños y calma,<br>
+    encontré en ti una luz para mi alma.<br><br>
+    Cada paso contigo se vuelve mejor,<br>
+    cada momento contigo se llena de amor.<br><br>
+    Ryoko... siempre contigo.<br>
+    — Ahmad 💜
+    </p>
   </div>
 </div>
 
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+</audio>
+
 <script>
+let text = document.getElementById("text");
+let world = document.getElementById("world");
+let poem = document.getElementById("poem");
+let couple = document.getElementById("couple");
+
+let msgs = [
+"Un mundo lleno de calabazas 🎃",
+"Y un chico llamado Ahmad...",
+"Encontró a Ryoko 💜",
+"Y todo se volvió especial..."
+];
+
+let i = 0;
+
+function start(){
+  document.getElementById("start").style.display="none";
+  document.getElementById("music").play();
+  next();
+}
+
+function next(){
+  if(i < msgs.length){
+    text.innerHTML = msgs[i];
+    i++;
+    setTimeout(next,2500);
+  }else{
+    world.classList.add("night");
+
+    setTimeout(()=>{
+      couple.style.left="45%";
+      couple.style.transform="scale(1.2)";
+      if(navigator.vibrate) navigator.vibrate(200);
+    },2000);
+
+    setTimeout(()=>{
+      poem.classList.add("show");
+    },6000);
+  }
+}
 
 /* pumpkins */
-for(let i=0;i<25;i++){
+for(let i=0;i<30;i++){
   let p=document.createElement("div");
   p.className="pumpkin";
   p.style.left=Math.random()*100+"%";
   p.style.bottom=Math.random()*100+"px";
-  document.body.appendChild(p);
+  document.getElementById("world").appendChild(p);
 }
 
-/* messages */
-let msgs=[
-"En un mundo de calabazas 🎃",
-"Todo se siente mejor contigo...",
-"Ryoko 💜",
-"Quiero caminar contigo siempre..."
-];
-
-let i=0;
-let text=document.getElementById("text");
-
-function next(){
-  if(i<msgs.length){
-    text.innerHTML=msgs[i];
-    i++;
-  }
+/* stars */
+for(let i=0;i<100;i++){
+  let s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  document.getElementById("world").appendChild(s);
 }
-setInterval(next,3000);
-
-/* night */
-setTimeout(()=>{
-  document.getElementById("world").classList.add("night");
-},5000);
-
-/* kiss */
-setTimeout(()=>{
-  document.getElementById("kiss").style.opacity=1;
-  if(navigator.vibrate) navigator.vibrate(200);
-},10000);
-
-/* poem */
-setTimeout(()=>{
-  document.getElementById("poem").classList.add("show");
-  document.getElementById("poemText").innerHTML=
-  "Ryoko... 💜<br><br>"+
-  "En este mundo de calabazas,<br>"+
-  encontré en ti algo único.<br><br>"+
-  "Quiero descubrir todo contigo,<br>"+
-  paso a paso... siempre.<br><br>"+
-  "<b>Ahmad 🖤</b>";
-},15000);
 
 /* tap hearts */
-document.addEventListener("click",(e)=>{
-  let h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="💜";
-  h.style.left=e.clientX+"px";
-  h.style.top=e.clientY+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),4000);
+document.addEventListener("click",e=>{
+  for(let i=0;i<5;i++){
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="💜";
+    h.style.left=e.clientX+"px";
+    h.style.top=e.clientY+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
+  }
 });
-
 </script>
 
 </body>
