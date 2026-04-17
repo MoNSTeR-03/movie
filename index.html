@@ -2,31 +2,552 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Ahmad 💜 Ryoko</title>
 
 <style>
+* { box-sizing: border-box; }
+
+:root{
+  --skin:#f6d2bd;
+  --hair:#23111e;
+}
+
+html, body{
+  width:100%;
+  height:100%;
+}
+
 body{
   margin:0;
   overflow:hidden;
   font-family:'Trebuchet MS', system-ui, sans-serif;
   background:black;
   color:white;
+  touch-action:manipulation;
 }
 
 #world{
   position:fixed;
   inset:0;
-  background:linear-gradient(to bottom,#ffb6c9,#43204a,#000);
+  overflow:hidden;
+  background:linear-gradient(to bottom,#ffb6c9 0%,#d87bd6 38%,#43204a 70%,#150813 100%);
+  transition:background 2.5s ease;
 }
+
+#world.night{
+  background:linear-gradient(to bottom,#2a103d 0%,#16081f 45%,#000 100%);
+}
+
+/* only background gets softer, not poem/text */
+#cinematicOverlay{
+  position:absolute;
+  inset:0;
+  backdrop-filter:blur(0px) brightness(1);
+  background:rgba(20, 6, 25, 0);
+  transition:all 1.2s ease;
+  pointer-events:none;
+  z-index:39;
+}
+
+#cinematicOverlay.show{
+  backdrop-filter:blur(3px) brightness(.82);
+  background:rgba(20, 6, 25, 0.12);
+}
+
+.moon{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:clamp(72px, 12vw, 110px);
+  height:clamp(72px, 12vw, 110px);
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #fffdf3, #ffe4f6 65%, #c785ff 100%);
+  box-shadow:0 0 30px rgba(255,220,245,.7), 0 0 80px rgba(215,130,255,.28);
+  opacity:0;
+  transition:2s;
+  z-index:2;
+}
+#world.night .moon{ opacity:1; }
+
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:0;
+  animation:twinkle 3s infinite ease-in-out;
+}
+#world.night .star{ opacity:1; }
+
+@keyframes twinkle{
+  0%,100%{transform:scale(1); opacity:.2;}
+  50%{transform:scale(1.5); opacity:1;}
+}
+
+.mountain{
+  position:absolute;
+  bottom:118px;
+  width:0;
+  height:0;
+  border-left:clamp(100px, 18vw, 220px) solid transparent;
+  border-right:clamp(100px, 18vw, 220px) solid transparent;
+  border-bottom:clamp(120px, 22vw, 260px) solid rgba(42,17,55,.95);
+  filter:drop-shadow(0 0 8px rgba(180,80,255,.18));
+}
+.m1{ left:-60px; transform:scale(1.05); }
+.m2{ left:18vw; border-bottom-color:rgba(58,26,70,.95); }
+.m3{ right:16vw; border-bottom-color:rgba(36,15,48,.95); }
+.m4{ right:-70px; transform:scale(1.1); }
+
+.ground{
+  position:absolute;
+  bottom:0;
+  height:clamp(120px, 18vh, 150px);
+  width:100%;
+  background:
+    linear-gradient(to bottom, rgba(90,35,50,.2), rgba(12,5,14,.95)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,.02) 0px,
+      rgba(255,255,255,.02) 2px,
+      transparent 2px,
+      transparent 16px
+    );
+  border-top:2px solid rgba(255,170,220,.12);
+}
+
+.path{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:min(86vw, 440px);
+  height:clamp(130px, 20vh, 170px);
+  background:linear-gradient(to bottom, rgba(255,210,225,.07), rgba(25,10,20,.7));
+  clip-path:polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+}
+
+.mist{
+  position:absolute;
+  left:-10%;
+  bottom:78px;
+  width:130%;
+  height:120px;
+  background:radial-gradient(circle, rgba(255,255,255,.05), transparent 60%);
+  filter:blur(14px);
+  animation:mistMove 18s linear infinite alternate;
+}
+@keyframes mistMove{
+  from{transform:translateX(-20px);}
+  to{transform:translateX(20px);}
+}
+
+#pumpkinField{
+  position:absolute;
+  inset:0;
+  z-index:3;
+}
+
+.pumpkin{
+  position:absolute;
+  width:clamp(22px, 4.8vw, 42px);
+  height:clamp(16px, 3.5vw, 30px);
+  background:#ff8a1d;
+  border-radius:48% 48% 42% 42%;
+  box-shadow:
+    inset -6px 0 0 rgba(175,75,0,.35),
+    inset 6px 0 0 rgba(255,190,90,.2),
+    0 0 12px rgba(255,136,0,.22);
+}
+.pumpkin::before,
+.pumpkin::after{
+  content:"";
+  position:absolute;
+  top:2px;
+  width:22%;
+  height:78%;
+  border-radius:45%;
+  background:rgba(255,130,20,.94);
+}
+.pumpkin::before{ left:14%; }
+.pumpkin::after{ right:14%; }
+.pumpkin span{
+  position:absolute;
+  top:-8px;
+  left:50%;
+  width:4px;
+  height:9px;
+  background:#5d8f2a;
+  transform:translateX(-50%);
+  border-radius:3px;
+}
+
+.heart,
+.spark{
+  position:absolute;
+  animation:float 4.8s linear forwards;
+  opacity:.95;
+  z-index:30;
+  user-select:none;
+  pointer-events:none;
+}
+@keyframes float{
+  from{transform:translateY(0) scale(1);}
+  to{transform:translateY(-180px) scale(1.45);opacity:0;}
+}
+
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:60;
+  padding:18px;
+}
+.screen.active{ display:flex; }
+
+.card{
+  background:rgba(8,4,16,.56);
+  border:1px solid rgba(255,190,230,.18);
+  box-shadow:0 0 30px rgba(180,85,255,.18);
+  border-radius:24px;
+  padding:clamp(20px, 4vw, 32px);
+  width:min(92%, 700px);
+  text-align:center;
+  backdrop-filter:blur(10px);
+}
+
+.card h2{
+  font-size:clamp(26px, 7vw, 58px);
+  margin:0 0 12px;
+  color:#ffb7ef;
+  text-shadow:0 0 12px rgba(255,145,230,.85), 0 0 28px rgba(174,84,255,.35);
+}
+
+.card p{
+  font-size:clamp(15px, 4vw, 24px);
+  opacity:.95;
+  line-height:1.5;
+}
+
+button{
+  margin-top:18px;
+  padding:14px 24px;
+  background:linear-gradient(135deg,#ff8fd8,#9b5cff);
+  color:white;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  font-size:18px;
+  box-shadow:0 0 18px rgba(255,133,214,.35);
+}
+
+#tapHint,
+#swipeHint{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(8,4,16,.45);
+  border:1px solid rgba(255,190,230,.15);
+  border-radius:999px;
+  padding:8px 14px;
+  font-size:clamp(11px, 2.8vw, 14px);
+  color:#ffd9f4;
+  z-index:45;
+  backdrop-filter:blur(8px);
+  opacity:.92;
+}
+#tapHint{ bottom:18px; }
+#swipeHint{ top:18px; }
 
 #text{
   position:absolute;
-  top:20px;
+  top:max(12px, env(safe-area-inset-top));
   width:100%;
   text-align:center;
+  padding:0 16px;
+  font-size:clamp(18px, 5vw, 42px);
+  line-height:1.35;
+  color:white;
+  text-shadow:0 0 12px rgba(255,150,245,.26);
+  z-index:25;
+  min-height:68px;
+  transition:opacity .8s ease, transform .8s ease;
+}
+
+.fadeText{
+  opacity:0;
+  transform:translateY(12px);
+}
+
+.showText{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.glowText{
+  color:#ffb7f2;
+  text-shadow:
+    0 0 12px rgba(255,145,230,.88),
+    0 0 30px rgba(180,86,255,.38);
+}
+
+#walkScene{
+  position:absolute;
+  bottom:max(46px, env(safe-area-inset-bottom));
+  width:100%;
+  height:25vh;
+  min-height:160px;
+  z-index:20;
+  pointer-events:none;
+}
+
+.couple{
+  position:absolute;
+  left:-200px;
+  bottom:0;
+  width:270px;
+  height:190px;
+  animation:walkAndStop 12s forwards;
+}
+
+@keyframes walkAndStop{
+  0%{ left:-200px; }
+  60%{ left:calc(50% - 90px); }
+  100%{ left:calc(50% - 90px); }
+}
+
+.person{
+  position:absolute;
+  width:100px;
+  height:175px;
+  bottom:0;
+  transition:transform 1.2s ease;
+}
+
+.man{ left:10px; }
+.girl{ left:150px; }
+
+.nameTag{
+  position:absolute;
+  top:-18px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:12px;
+  font-weight:bold;
+  color:#ffd7f4;
+  text-shadow:0 0 10px rgba(255,150,225,.8);
+  white-space:nowrap;
+}
+
+.head{
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:40px;
+  height:46px;
+  background:var(--skin);
+  border-radius:46% 46% 50% 50%;
+  box-shadow:0 0 10px rgba(255,200,210,.1);
+}
+
+.man .head::before{
+  content:"";
+  position:absolute;
+  top:-3px;
+  left:-1px;
+  width:42px;
+  height:18px;
+  background:#24121d;
+  border-radius:60% 60% 28% 28%;
+}
+
+.girl .head::before{
+  content:"";
+  position:absolute;
+  top:-6px;
+  left:-5px;
+  width:50px;
+  height:24px;
+  background:var(--hair);
+  border-radius:65% 65% 35% 35%;
+}
+.girl .head::after{
+  content:"";
+  position:absolute;
+  top:8px;
+  left:-4px;
+  width:9px;
+  height:24px;
+  background:var(--hair);
+  border-radius:10px;
+  box-shadow:39px 0 0 var(--hair);
+}
+
+.eye{
+  position:absolute;
+  top:17px;
+  width:4px;
+  height:4px;
+  background:#2d1827;
+  border-radius:50%;
+}
+.eye.left{ left:12px; }
+.eye.right{ right:12px; }
+
+.blush{
+  position:absolute;
+  top:24px;
+  width:8px;
+  height:5px;
+  border-radius:50%;
+  background:rgba(255,120,160,.35);
+}
+.blush.left{ left:6px; }
+.blush.right{ right:6px; }
+
+.body{
+  position:absolute;
+  top:42px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.man .body{
+  width:34px;
+  height:62px;
+  background:#6680ff;
+  border-radius:12px 12px 8px 8px;
+}
+
+.girl .body{
+  width:30px;
+  height:42px;
+  background:#ff84d4;
+  border-radius:12px 12px 10px 10px;
+}
+
+.girl .dress{
+  position:absolute;
+  top:82px;
+  left:50%;
+  transform:translateX(-50%);
+  width:0;
+  height:0;
+  border-left:28px solid transparent;
+  border-right:28px solid transparent;
+  border-top:56px solid #ff84d4;
+}
+
+.arm{
+  position:absolute;
+  top:52px;
+  width:10px;
+  height:48px;
+  background:var(--skin);
+  border-radius:10px;
+  transform-origin:top center;
+}
+.arm.left{ left:18px; }
+.arm.right{ right:18px; }
+
+.leg{
+  position:absolute;
+  bottom:0;
+  width:10px;
+  height:64px;
+  background:#1b1020;
+  border-radius:10px;
+  transform-origin:top center;
+}
+.leg.left{ left:31px; }
+.leg.right{ right:31px; }
+
+.walking .arm.left{ animation:armSwing .7s ease-in-out infinite alternate; }
+.walking .arm.right{ animation:armSwing2 .7s ease-in-out infinite alternate; }
+.walking .leg.left{ animation:legLeft .7s ease-in-out infinite alternate; }
+.walking .leg.right{ animation:legRight .7s ease-in-out infinite alternate; }
+
+@keyframes armSwing{
+  from{ transform:rotate(18deg); }
+  to{ transform:rotate(-18deg); }
+}
+@keyframes armSwing2{
+  from{ transform:rotate(-18deg); }
+  to{ transform:rotate(18deg); }
+}
+@keyframes legLeft{
+  from{ transform:rotate(22deg); }
+  to{ transform:rotate(-20deg); }
+}
+@keyframes legRight{
+  from{ transform:rotate(-20deg); }
+  to{ transform:rotate(22deg); }
+}
+
+.hand-link{
+  position:absolute;
+  left:116px;
+  top:86px;
+  width:34px;
+  height:5px;
+  background:rgba(255,198,220,.95);
+  border-radius:10px;
+  box-shadow:0 0 12px rgba(255,140,220,.45);
+}
+
+.kiss-glow{
+  position:absolute;
+  left:50%;
+  bottom:96px;
+  width:100px;
+  height:100px;
+  transform:translateX(-50%) scale(.4);
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,170,230,.55), rgba(255,120,210,.18), transparent 70%);
+  filter:blur(4px);
+  opacity:0;
+}
+
+.kiss-effect{
+  position:absolute;
+  left:50%;
+  bottom:128px;
+  transform:translateX(-50%);
   font-size:28px;
-  transition:opacity .8s;
+  opacity:0;
+}
+
+.kiss-active .kiss-glow{
+  animation:kissGlow 2.5s forwards;
+}
+
+.kiss-active .kiss-effect{
+  animation:kissPop 2s forwards;
+}
+
+.kiss-active .man{
+  transform:translateX(24px) rotate(4deg);
+}
+
+.kiss-active .girl{
+  transform:translateX(-22px) rotate(-4deg);
+}
+
+@keyframes kissGlow{
+  0%{ opacity:0; transform:translateX(-50%) scale(.3); }
+  40%{ opacity:1; transform:translateX(-50%) scale(1); }
+  100%{ opacity:0; transform:translateX(-50%) scale(1.55); }
+}
+
+@keyframes kissPop{
+  0%{ opacity:0; transform:translateX(-50%) scale(.4); }
+  35%{ opacity:1; transform:translateX(-50%) scale(1.25); }
+  100%{ opacity:0; transform:translateX(-50%) scale(1.85); }
 }
 
 #poemBox{
@@ -35,39 +556,153 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
+  padding:18px;
+  z-index:55;
   opacity:0;
-  transition:opacity 1.5s;
+  pointer-events:none;
+  transition:opacity 1.6s ease;
 }
 
 #poemBox.show{
   opacity:1;
+  pointer-events:auto;
 }
 
 .poemCard{
-  background:rgba(0,0,0,.6);
-  padding:20px;
-  border-radius:20px;
-  max-width:600px;
+  width:min(94%, 820px);
+  max-height:min(82vh, 760px);
+  overflow:auto;
+  background:rgba(8,4,16,.58);
+  border:1px solid rgba(255,190,230,.18);
+  box-shadow:0 0 35px rgba(180,85,255,.2);
+  border-radius:24px;
+  padding:22px;
+  backdrop-filter:blur(14px);
+}
+
+.poemTitle{
+  font-size:clamp(26px, 6vw, 52px);
+  color:#ffb7ef;
+  margin-bottom:14px;
+  text-shadow:0 0 12px rgba(255,145,230,.85), 0 0 28px rgba(174,84,255,.35);
+}
+
+.poemText{
+  font-size:clamp(16px, 4vw, 26px);
+  line-height:1.75;
+  color:#ffd9f5;
+  text-shadow:0 0 10px rgba(255,160,240,.18);
+}
+
+#poemPages{
+  position:absolute;
+  bottom:14px;
+  right:14px;
+  z-index:57;
+  font-size:12px;
+  color:#ffd8f4;
+  background:rgba(8,4,16,.48);
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,190,230,.14);
 }
 </style>
 </head>
-
 <body>
 
 <div id="world">
-  <div id="text"></div>
+  <div class="moon"></div>
+
+  <div class="mountain m1"></div>
+  <div class="mountain m2"></div>
+  <div class="mountain m3"></div>
+  <div class="mountain m4"></div>
+
+  <div class="mist"></div>
+  <div class="path"></div>
+  <div class="ground"></div>
+
+  <div id="pumpkinField"></div>
+
+  <div id="text" class="showText"></div>
+
+  <div id="tapHint">Toca la pantalla para crear corazones 💜</div>
+
+  <div id="walkScene">
+    <div class="couple">
+      <div id="man" class="person man walking">
+        <div class="nameTag">Ahmad</div>
+        <div class="head">
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="blush left"></div>
+          <div class="blush right"></div>
+        </div>
+        <div class="body"></div>
+        <div class="arm left"></div>
+        <div class="arm right"></div>
+        <div class="leg left"></div>
+        <div class="leg right"></div>
+      </div>
+
+      <div class="hand-link"></div>
+
+      <div id="girl" class="person girl walking">
+        <div class="nameTag">Ryoko</div>
+        <div class="head">
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="blush left"></div>
+          <div class="blush right"></div>
+        </div>
+        <div class="body"></div>
+        <div class="dress"></div>
+        <div class="arm left"></div>
+        <div class="arm right"></div>
+        <div class="leg left"></div>
+        <div class="leg right"></div>
+      </div>
+    </div>
+
+    <div class="kiss-glow"></div>
+    <div class="kiss-effect">💜✨💜</div>
+  </div>
+
+  <div id="cinematicOverlay"></div>
 
   <div id="poemBox">
     <div class="poemCard">
-      <div id="poemText"></div>
+      <div class="poemTitle">Para Ryoko 💜</div>
+      <div id="poemText" class="poemText"></div>
     </div>
+    <div id="poemPages">1 / 3</div>
   </div>
 </div>
 
+<div id="startScreen" class="screen active">
+  <div class="card">
+    <h2>Un mundo de calabazas para Ryoko 🎃💜</h2>
+    <p>Hecho por Ahmad, con cariño, magia y un pedacito de su corazón.</p>
+    <button onclick="start()">Empezar 💜</button>
+  </div>
+</div>
+
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
 <script>
+const world = document.getElementById("world");
 const text = document.getElementById("text");
+const music = document.getElementById("music");
+const pumpkinField = document.getElementById("pumpkinField");
 const poemBox = document.getElementById("poemBox");
+const walkScene = document.getElementById("walkScene");
+const man = document.getElementById("man");
+const girl = document.getElementById("girl");
 const poemText = document.getElementById("poemText");
+const poemPages = document.getElementById("poemPages");
+const cinematicOverlay = document.getElementById("cinematicOverlay");
 
 const messages = [
   "En un mundo lleno de calabazas... 🎃",
@@ -80,45 +715,197 @@ const messages = [
   "mi lugar favorito siempre será contigo."
 ];
 
-const poem = `
-Te elegiría a ti...<br><br>
-una y otra vez 💜
-`;
+const poems = [
+`En este mundo de calabazas y cielos en calma,<br>
+encontré en ti una luz que abraza mi alma.<br><br>
+Si el camino es largo, quiero recorrerlo contigo,<br>
+con tu nombre en mi pecho y tu paz como abrigo.<br><br>
+Eres la ternura que vuelve bonito el paisaje,<br>
+la razón por la que cada paso se siente viaje.`,
+
+`Y si la noche cae, y todo queda en silencio,<br>
+quiero seguir a tu lado, amándote despacio y sin miedo al tiempo.<br><br>
+Porque en cada rincón donde miro tu nombre,<br>
+todo se vuelve más dulce, más suave, más inmenso.<br><br>
+Tú haces que el mundo parezca más bonito,<br>
+como si hasta el aire supiera que existes.`,
+
+`Porque entre mil lugares, uno siempre será mi destino:<br>
+tú, Ryoko... conmigo.<br><br>
+Si mañana llega, quiero vivirlo contigo.<br>
+Si la noche cae, quiero soñarla contigo.<br>
+Y si el corazón habla, siempre dirá lo mismo:<br><br>
+<strong>te elegiría a ti, una y otra vez.</strong><br><br>
+<strong>Con amor, Ahmad 🖤</strong>`
+];
 
 let i = 0;
+let poemIndex = 0;
+let poemVisible = false;
+let heartSpawnerStarted = false;
+let touchStartX = 0;
+let touchEndX = 0;
 
-function showText(msg){
-  text.style.opacity = "0";
-  setTimeout(()=>{
-    text.innerHTML = msg;
-    text.style.opacity = "1";
-  },300);
+/* pumpkins */
+for(let n = 0; n < 34; n++){
+  const p = document.createElement("div");
+  p.className = "pumpkin";
+  p.style.left = Math.random() * 100 + "%";
+  p.style.bottom = (78 + Math.random() * 50) + "px";
+  p.style.transform = `scale(${0.7 + Math.random() * 0.9})`;
+  const stem = document.createElement("span");
+  p.appendChild(stem);
+  pumpkinField.appendChild(p);
+}
+
+/* stars */
+for(let s = 0; s < 110; s++){
+  const st = document.createElement("div");
+  st.className = "star";
+  st.style.left = Math.random() * 100 + "vw";
+  st.style.top = Math.random() * 70 + "vh";
+  st.style.animationDelay = Math.random() * 3 + "s";
+  world.appendChild(st);
 }
 
 function start(){
-  showText(messages[0]);
-
-  const interval = setInterval(()=>{
-    i++;
-    if(i < messages.length){
-      showText(messages[i]);
-    }else{
-      clearInterval(interval);
-    }
-  },3200);
-
-  /* ✅ FIXED TIMING */
-  const totalDuration = messages.length * 3200;
-
-  setTimeout(()=>{
-    text.style.opacity = "0";
-
-    poemText.innerHTML = poem;
-    poemBox.classList.add("show");
-  }, totalDuration + 1000);
+  music.play().catch(()=>{});
+  document.getElementById("startScreen").classList.remove("active");
+  startStory();
 }
 
-start();
+function showText(msg, glow = false){
+  text.classList.remove("showText");
+  text.classList.add("fadeText");
+  setTimeout(() => {
+    text.innerHTML = msg;
+    text.className = glow ? "showText glowText" : "showText";
+  }, 220);
+}
+
+function startStory(){
+  showText(messages[0]);
+
+  const interval = setInterval(() => {
+    i++;
+    if(i < messages.length){
+      const glow = messages[i].includes("Ryoko");
+      showText(messages[i], glow);
+    } else {
+      clearInterval(interval);
+      text.innerHTML = "";
+    }
+  }, 3200);
+
+  setTimeout(() => {
+    world.classList.add("night");
+  }, 5000);
+
+  setTimeout(() => {
+    walkScene.classList.add("kiss-active");
+    man.classList.remove("walking");
+    girl.classList.remove("walking");
+
+    if (navigator.vibrate) {
+      navigator.vibrate([120, 80, 180]);
+    }
+
+    for(let h = 0; h < 28; h++){
+      spawnAt(
+        (window.innerWidth * (0.47 + Math.random() * 0.06)),
+        window.innerHeight - (100 + Math.random() * 30),
+        Math.random() > 0.35 ? "💜" : "✨",
+        16 + Math.random() * 18
+      );
+    }
+  }, 8500);
+
+  setTimeout(() => {
+    poemVisible = true;
+    cinematicOverlay.classList.add("show");
+    poemBox.classList.add("show");
+    renderPoem();
+  }, 18500);
+
+  if (!heartSpawnerStarted) {
+    heartSpawnerStarted = true;
+    setInterval(() => {
+      const symbol = Math.random() > 0.5 ? "💜" : "✨";
+      spawnAt(
+        window.innerWidth * (0.2 + Math.random() * 0.6),
+        window.innerHeight - (80 + Math.random() * 70),
+        symbol,
+        14 + Math.random() * 14
+      );
+    }, 550);
+  }
+}
+
+/* tap hearts */
+document.addEventListener("pointerdown", (e) => {
+  if (e.target.tagName === "BUTTON") return;
+
+  for(let k = 0; k < 7; k++){
+    spawnAt(
+      e.clientX + (Math.random() * 30 - 15),
+      e.clientY + (Math.random() * 20 - 10),
+      "💜",
+      14 + Math.random() * 10
+    );
+  }
+});
+
+/* swipe */
+document.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].clientX;
+}, {passive:true});
+
+document.addEventListener("touchend", (e) => {
+  touchEndX = e.changedTouches[0].clientX;
+  handleSwipe();
+}, {passive:true});
+
+function handleSwipe(){
+  if(!poemVisible) return;
+  const diff = touchEndX - touchStartX;
+  if(Math.abs(diff) < 40) return;
+
+  if(diff < 0){
+    poemIndex = Math.min(poemIndex + 1, poems.length - 1);
+  } else {
+    poemIndex = Math.max(poemIndex - 1, 0);
+  }
+  renderPoem();
+}
+
+/* keyboard */
+document.addEventListener("keydown", (e) => {
+  if(!poemVisible) return;
+  if(e.key === "ArrowRight"){
+    poemIndex = Math.min(poemIndex + 1, poems.length - 1);
+    renderPoem();
+  }
+  if(e.key === "ArrowLeft"){
+    poemIndex = Math.max(poemIndex - 1, 0);
+    renderPoem();
+  }
+});
+
+function renderPoem(){
+  poemText.innerHTML = poems[poemIndex];
+  poemPages.textContent = `${poemIndex + 1} / ${poems.length}`;
+}
+
+function spawnAt(x, y, symbol, size){
+  const thing = document.createElement("div");
+  thing.className = symbol === "💜" ? "heart" : "spark";
+  thing.innerHTML = symbol;
+  thing.style.left = x + "px";
+  thing.style.top = y + "px";
+  thing.style.fontSize = size + "px";
+  world.appendChild(thing);
+  setTimeout(() => thing.remove(), 5000);
+}
 </script>
 
 </body>
