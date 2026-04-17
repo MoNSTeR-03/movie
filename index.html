@@ -820,14 +820,14 @@ function startStory(){
     }
   }, 8500);
 
-  setTimeout(() => {
+ setTimeout(() => {
   text.style.opacity = "0";
 
   poemVisible = true;
   cinematicOverlay.classList.add("show");
   poemBox.classList.add("show");
   renderPoem();
-}, messages.length * 3200 + 1000);
+}, messages.length * 3200 + 4000);
 
   if (!heartSpawnerStarted) {
     heartSpawnerStarted = true;
