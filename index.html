@@ -1,17 +1,73 @@
-<!-- ONLY CHANGE IS IN JS PART (scroll down to startStory function) -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ahmad 💜 Ryoko</title>
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  font-family:'Trebuchet MS', system-ui, sans-serif;
+  background:black;
+  color:white;
+}
+
+#world{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(to bottom,#ffb6c9,#43204a,#000);
+}
+
+#text{
+  position:absolute;
+  top:20px;
+  width:100%;
+  text-align:center;
+  font-size:28px;
+  transition:opacity .8s;
+}
+
+#poemBox{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:opacity 1.5s;
+}
+
+#poemBox.show{
+  opacity:1;
+}
+
+.poemCard{
+  background:rgba(0,0,0,.6);
+  padding:20px;
+  border-radius:20px;
+  max-width:600px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="world">
+  <div id="text"></div>
+
+  <div id="poemBox">
+    <div class="poemCard">
+      <div id="poemText"></div>
+    </div>
+  </div>
+</div>
 
 <script>
-const world = document.getElementById("world");
 const text = document.getElementById("text");
-const music = document.getElementById("music");
-const pumpkinField = document.getElementById("pumpkinField");
 const poemBox = document.getElementById("poemBox");
-const walkScene = document.getElementById("walkScene");
-const man = document.getElementById("man");
-const girl = document.getElementById("girl");
 const poemText = document.getElementById("poemText");
-const poemPages = document.getElementById("poemPages");
-const cinematicOverlay = document.getElementById("cinematicOverlay");
 
 const messages = [
   "En un mundo lleno de calabazas... 🎃",
@@ -24,83 +80,46 @@ const messages = [
   "mi lugar favorito siempre será contigo."
 ];
 
-const poems = [
-`En este mundo de calabazas y cielos en calma,<br>
-encontré en ti una luz que abraza mi alma.<br><br>
-Si el camino es largo, quiero recorrerlo contigo,<br>
-con tu nombre en mi pecho y tu paz como abrigo.<br><br>
-Eres la ternura que vuelve bonito el paisaje,<br>
-la razón por la que cada paso se siente viaje.`,
-
-`Y si la noche cae, y todo queda en silencio,<br>
-quiero seguir a tu lado, amándote despacio y sin miedo al tiempo.<br><br>
-Porque en cada rincón donde miro tu nombre,<br>
-todo se vuelve más dulce, más suave, más inmenso.<br><br>
-Tú haces que el mundo parezca más bonito,<br>
-como si hasta el aire supiera que existes.`,
-
-`Porque entre mil lugares, uno siempre será mi destino:<br>
-tú, Ryoko... conmigo.<br><br>
-Si mañana llega, quiero vivirlo contigo.<br>
-Si la noche cae, quiero soñarla contigo.<br>
-Y si el corazón habla, siempre dirá lo mismo:<br><br>
-<strong>te elegiría a ti, una y otra vez.</strong><br><br>
-<strong>Con amor, Ahmad 🖤</strong>`
-];
+const poem = `
+Te elegiría a ti...<br><br>
+una y otra vez 💜
+`;
 
 let i = 0;
-let poemIndex = 0;
-let poemVisible = false;
-let heartSpawnerStarted = false;
 
-function showText(msg, glow = false){
-  text.classList.remove("showText");
-  text.classList.add("fadeText");
-  setTimeout(() => {
+function showText(msg){
+  text.style.opacity = "0";
+  setTimeout(()=>{
     text.innerHTML = msg;
-    text.className = glow ? "showText glowText" : "showText";
-  }, 220);
+    text.style.opacity = "1";
+  },300);
 }
 
-function startStory(){
+function start(){
   showText(messages[0]);
 
-  const interval = setInterval(() => {
+  const interval = setInterval(()=>{
     i++;
     if(i < messages.length){
-      const glow = messages[i].includes("Ryoko");
-      showText(messages[i], glow);
-    } else {
+      showText(messages[i]);
+    }else{
       clearInterval(interval);
-      text.innerHTML = "";
     }
-  }, 3200);
+  },3200);
 
-  setTimeout(() => {
-    world.classList.add("night");
-  }, 5000);
-
-  setTimeout(() => {
-    walkScene.classList.add("kiss-active");
-    man.classList.remove("walking");
-    girl.classList.remove("walking");
-  }, 8500);
-
-  /* ✅ FIXED TIMING HERE */
+  /* ✅ FIXED TIMING */
   const totalDuration = messages.length * 3200;
 
-  setTimeout(() => {
-    text.style.opacity = "0"; // smooth fade
+  setTimeout(()=>{
+    text.style.opacity = "0";
 
-    poemVisible = true;
-    cinematicOverlay.classList.add("show");
+    poemText.innerHTML = poem;
     poemBox.classList.add("show");
-    renderPoem();
   }, totalDuration + 1000);
 }
 
-function renderPoem(){
-  poemText.innerHTML = poems[poemIndex];
-  poemPages.textContent = `${poemIndex + 1} / ${poems.length}`;
-}
+start();
 </script>
+
+</body>
+</html>
